@@ -5,8 +5,10 @@ import java.text.SimpleDateFormat;
 
 import monRdv.dao.IAdresseDao;
 import monRdv.dao.ILieuDao;
+import monRdv.dao.IPatientDao;
 import monRdv.dao.csv.AdresseDaoCsv;
 import monRdv.dao.csv.LieuDaoCsv;
+import monRdv.dao.csv.PatientDaoCsv;
 import monRdv.model.Adresse;
 import monRdv.model.Civilite;
 import monRdv.model.Creneau;
@@ -22,6 +24,7 @@ public class ProgrammeTest {
 	public static void main(String[] args) throws ParseException {
 		IAdresseDao adresseDao = new AdresseDaoCsv("adresses.csv");
 		ILieuDao lieuDao = new LieuDaoCsv("lieux.csv");
+		IPatientDao patientDao = new PatientDaoCsv("patients.csv");
 		
 		Praticien jekyll = new Praticien("JEKYLL", "Henri");
 		jekyll.setEmail("dr.jekyll@gmail.com");
@@ -35,6 +38,8 @@ public class ProgrammeTest {
 		dupont.setNumeroSS("1 85 33 14 745");
 		dupont.setTelephone("06 06 06 06 06");
 
+		patientDao.create(dupont);
+		
 		Specialite generaliste = new Specialite("Généraliste");
 		generaliste.setDescription("Médecine Générale");
 
