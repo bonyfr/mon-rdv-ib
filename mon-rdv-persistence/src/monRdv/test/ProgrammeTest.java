@@ -12,6 +12,8 @@ import monRdv.dao.csv.AdresseDaoCsv;
 import monRdv.dao.csv.LieuDaoCsv;
 import monRdv.dao.csv.PracticienDaoCsv;
 import monRdv.dao.csv.SpecialiteDaoCsv;
+import monRdv.dao.IPatientDao;
+import monRdv.dao.csv.PatientDaoCsv;
 import monRdv.model.Adresse;
 import monRdv.model.Civilite;
 import monRdv.model.Creneau;
@@ -27,7 +29,11 @@ public class ProgrammeTest {
 	public static void main(String[] args) throws ParseException {
 		IAdresseDao adresseDao = new AdresseDaoCsv("adresses.csv");
 		ILieuDao lieuDao = new LieuDaoCsv("lieux.csv");
+<<<<<<< HEAD
 		IPracticienDao practicienDao = new PracticienDaoCsv("practiciens.csv");
+=======
+		IPatientDao patientDao = new PatientDaoCsv("patients.csv");
+>>>>>>> 46b5c86c648a0b79e45257bd3b1ca64f54fc96cb
 		
 		Praticien jekyll = new Praticien("JEKYLL", "Henri");
 		jekyll.setEmail("dr.jekyll@gmail.com");
@@ -43,6 +49,8 @@ public class ProgrammeTest {
 		dupont.setNumeroSS("1 85 33 14 745");
 		dupont.setTelephone("06 06 06 06 06");
 
+		patientDao.create(dupont);
+		
 		Specialite generaliste = new Specialite("Généraliste");
 		generaliste.setDescription("Médecine Générale");
 
