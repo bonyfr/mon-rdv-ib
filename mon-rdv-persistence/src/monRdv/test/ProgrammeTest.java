@@ -2,11 +2,14 @@ package monRdv.test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import monRdv.dao.IAdresseDao;
 import monRdv.dao.ILieuDao;
+import monRdv.dao.ISpecialiteDao;
 import monRdv.dao.csv.AdresseDaoCsv;
 import monRdv.dao.csv.LieuDaoCsv;
+import monRdv.dao.csv.SpecialiteDaoCsv;
 import monRdv.model.Adresse;
 import monRdv.model.Civilite;
 import monRdv.model.Creneau;
@@ -38,6 +41,15 @@ public class ProgrammeTest {
 		Specialite generaliste = new Specialite("Généraliste");
 		generaliste.setDescription("Médecine Générale");
 
+		ISpecialiteDao specialiteDao = new SpecialiteDaoCsv("specialites.csv");
+		specialiteDao.create(generaliste);
+		
+		Specialite bidoniste = new Specialite("Bidon", "Bidon");
+		specialiteDao.create(bidoniste);
+		List<Specialite> specialitesFromCsv = specialiteDao.findAll();
+		specialiteDao.delete(specialitesFromCsv.get(specialitesFromCsv.size() - 1));
+		
+		
 		jekyll.getSpecialites().add(generaliste);
 		// generaliste.getPraticiens().add(jekyll); // A discuter ?
 
