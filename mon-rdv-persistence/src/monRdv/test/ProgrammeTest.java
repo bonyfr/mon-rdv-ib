@@ -37,6 +37,8 @@ public class ProgrammeTest {
 
 		Specialite generaliste = new Specialite("Généraliste");
 		generaliste.setDescription("Médecine Générale");
+		
+		
 
 		jekyll.getSpecialites().add(generaliste);
 		// generaliste.getPraticiens().add(jekyll); // A discuter ?
