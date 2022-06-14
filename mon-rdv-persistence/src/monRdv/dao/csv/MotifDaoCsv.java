@@ -9,15 +9,20 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import monRdv.dao.IAdresseDao;
 import monRdv.dao.IMotifDao;
+import monRdv.dao.IPracticienDao;
 import monRdv.exception.MonRdvPersistenceException;
+import monRdv.model.Adresse;
 import monRdv.model.Motif;
+import monRdv.model.Praticien;
 
 
 public class MotifDaoCsv implements IMotifDao {
 
 	private final String chemin;
-	
+	private IPracticienDao praticienDao = new PracticienDaoCsv("praticien.csv");
+
 	public MotifDaoCsv(String chemin) {
 		super();
 		this.chemin = chemin;
@@ -100,9 +105,15 @@ public class MotifDaoCsv implements IMotifDao {
 					Long id = Long.valueOf(items[0]);
 					String titre = items[1];
 					int duree = Integer.parseInt(items[2]);
+					Long idPraticien = !items[3].isEmpty() ? Long.valueOf(items[3]) : null;
 
 					Motif motif = new Motif(titre, duree);
 					motif.setId(id);
+
+					if(idPraticien != null) {
+						Praticien praticien = praticienDao.findById(idPraticien);
+						motif.setPraticien(praticien);
+					}
 
 					motifs.add(motif);
 				}
@@ -123,6 +134,10 @@ public class MotifDaoCsv implements IMotifDao {
 			sb.append(motif.getId()).append(";");
 			sb.append(motif.getTitre()).append(";");
 			sb.append(motif.getDuree());
+
+			if(motif.getPraticien() != null && motif.getPraticien().getId() != null) {
+				sb.append(motif.getPraticien().getId());
+			}
 
 			lignes.add(sb.toString());
 		}
