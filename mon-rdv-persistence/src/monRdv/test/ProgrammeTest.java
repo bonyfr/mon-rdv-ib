@@ -3,6 +3,10 @@ package monRdv.test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import monRdv.dao.IAdresseDao;
+import monRdv.dao.ILieuDao;
+import monRdv.dao.csv.AdresseDaoCsv;
+import monRdv.dao.csv.LieuDaoCsv;
 import monRdv.model.Adresse;
 import monRdv.model.Civilite;
 import monRdv.model.Creneau;
@@ -16,6 +20,9 @@ import monRdv.model.Specialite;
 public class ProgrammeTest {
 
 	public static void main(String[] args) throws ParseException {
+		IAdresseDao adresseDao = new AdresseDaoCsv("adresses.csv");
+		ILieuDao lieuDao = new LieuDaoCsv("lieux.csv");
+		
 		Praticien jekyll = new Praticien("JEKYLL", "Henri");
 		jekyll.setEmail("dr.jekyll@gmail.com");
 		jekyll.setMotDePasse("Hyde");
@@ -36,8 +43,12 @@ public class ProgrammeTest {
 
 		Lieu clinique = new Lieu("Clinique de la Victoire");
 		clinique.setCommentaires("Se présenter à l'accueil");
+		
+		lieuDao.create(clinique);
 
 		Adresse adrClinique = new Adresse("1 rue de la Paix", "3ème étage", "75008", "Paris");
+		
+		adresseDao.create(adrClinique);
 
 		clinique.setAdr(adrClinique);
 
