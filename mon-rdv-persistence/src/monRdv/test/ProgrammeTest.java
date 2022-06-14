@@ -6,9 +6,11 @@ import java.util.List;
 
 import monRdv.dao.IAdresseDao;
 import monRdv.dao.ILieuDao;
+import monRdv.dao.IPracticienDao;
 import monRdv.dao.ISpecialiteDao;
 import monRdv.dao.csv.AdresseDaoCsv;
 import monRdv.dao.csv.LieuDaoCsv;
+import monRdv.dao.csv.PracticienDaoCsv;
 import monRdv.dao.csv.SpecialiteDaoCsv;
 import monRdv.model.Adresse;
 import monRdv.model.Civilite;
@@ -25,11 +27,14 @@ public class ProgrammeTest {
 	public static void main(String[] args) throws ParseException {
 		IAdresseDao adresseDao = new AdresseDaoCsv("adresses.csv");
 		ILieuDao lieuDao = new LieuDaoCsv("lieux.csv");
+		IPracticienDao practicienDao = new PracticienDaoCsv("practiciens.csv");
 		
 		Praticien jekyll = new Praticien("JEKYLL", "Henri");
 		jekyll.setEmail("dr.jekyll@gmail.com");
 		jekyll.setMotDePasse("Hyde");
 		jekyll.setMatricule("8888888");
+
+		practicienDao.create(jekyll);
 
 		Patient dupont = new Patient(Civilite.M, "DUPONT", "Pierre");
 		dupont.setEmail("pierre.dupont@gmail.com");
