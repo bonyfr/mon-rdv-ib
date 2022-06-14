@@ -67,6 +67,7 @@ public class ProgrammeTest {
 		
 		generaliste.getPraticiens().add(jekyll);
 		// jekyll.getSpecialites().add(generaliste);
+		specialiteDao.update(generaliste);
 		
 
 		Lieu clinique = new Lieu("Clinique de la Victoire");

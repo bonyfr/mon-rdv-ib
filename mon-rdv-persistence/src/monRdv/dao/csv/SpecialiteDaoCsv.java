@@ -9,13 +9,18 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import monRdv.dao.IAdresseDao;
+import monRdv.dao.IPracticienDao;
 import monRdv.dao.ISpecialiteDao;
 import monRdv.exception.MonRdvPersistenceException;
+import monRdv.model.Praticien;
 import monRdv.model.Specialite;
 
 public class SpecialiteDaoCsv implements ISpecialiteDao {
+	private IPracticienDao praticienDao = new PracticienDaoCsv("practiciens.csv");
 
 	private final String chemin;
+	private final String cheminLien = "praticien_specialite.csv";
 
 	public SpecialiteDaoCsv(String chemin) {
 		super();
@@ -121,9 +126,28 @@ public class SpecialiteDaoCsv implements ISpecialiteDao {
 					Long id = Long.valueOf(items[0]);
 					String nom = items[1];
 					String description = items[2];
-					// TODO: lien
+					ArrayList<Praticien> praticiens = new ArrayList<Praticien>(); 
+					Path pathLien = Paths.get(this.cheminLien);
+					if(Files.exists(pathLien))
+					{
+						List<String> lignesLien = Files.readAllLines(pathLien, StandardCharsets.UTF_8);
+						for(String ligneLien : lignesLien) {
+							String[] liens = ligneLien.split(";");
+							if(liens.length > 1)
+							{
+								if(liens[1] == id.toString())
+								{
+									Praticien praticien = praticienDao.findById(Long.valueOf(liens[0]));
+									if(praticien == null) {
+										throw new MonRdvPersistenceException("Unable to find praticient id"+liens[0]);
+									}
+									praticiens.add(praticien);
+								}
+							}
+						}
+					}
 					Specialite specialite = new Specialite(id, nom, description);
-
+					specialite.setPraticiens(praticiens);
 					specialites.add(specialite);
 				}
 			}
@@ -136,6 +160,7 @@ public class SpecialiteDaoCsv implements ISpecialiteDao {
 
 	private void writeAll(List<Specialite> specialites) {
 		List<String> lignes = new ArrayList<String>();
+		List<String> lignesLien = new ArrayList<String>();
 
 		for (Specialite specialite : specialites) {
 			StringBuilder sb = new StringBuilder();
@@ -145,10 +170,22 @@ public class SpecialiteDaoCsv implements ISpecialiteDao {
 			sb.append(specialite.getDescription()).append(";");
 			
 			lignes.add(sb.toString());
+			StringBuilder sbLien = new StringBuilder();
+			for(Praticien praticien : specialite.getPraticiens()) {
+				sbLien.append(praticien.getId()).append(";").append(specialite.getId());
+			}
+			lignesLien.add(sbLien.toString());
 		}
 
 		try {
 			Files.write(Paths.get(this.chemin), lignes, StandardCharsets.UTF_8, StandardOpenOption.CREATE,
+					StandardOpenOption.TRUNCATE_EXISTING);
+		} catch (IOException e) {
+			throw new MonRdvPersistenceException("Erreur à l'écriture fichier", e);
+		}
+		
+		try {
+			Files.write(Paths.get(this.cheminLien), lignesLien, StandardCharsets.UTF_8, StandardOpenOption.CREATE,
 					StandardOpenOption.TRUNCATE_EXISTING);
 		} catch (IOException e) {
 			throw new MonRdvPersistenceException("Erreur à l'écriture fichier", e);
