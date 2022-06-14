@@ -12,6 +12,7 @@ import java.util.List;
 import monRdv.dao.IPatientDao;
 import monRdv.exception.MonRdvPersistenceException;
 import monRdv.model.Civilite;
+import monRdv.model.Lieu;
 import monRdv.model.Patient;
 
 public class PatientDaoCsv implements IPatientDao{
@@ -88,8 +89,25 @@ public class PatientDaoCsv implements IPatientDao{
 
 	@Override
 	public void delete(Patient obj) {
-		// TODO Auto-generated method stub
-		
+		List<Patient> patients = readAll();
+
+		boolean find = false;
+		int pos = 0;
+
+		for (; pos < patients.size(); pos++) {
+			Patient patient = patients.get(pos);
+
+			if (patient.getId() == obj.getId()) {
+				find = true;
+				break;
+			}
+		}
+
+		if (find) {
+			patients.remove(pos);
+		}
+
+		writeAll(patients);		
 	}
 	
 	private List<Patient> readAll() {
