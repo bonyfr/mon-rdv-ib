@@ -53,6 +53,8 @@ public class ProgrammeTest {
 		
 		Specialite generaliste = new Specialite("Généraliste");
 		generaliste.setDescription("Médecine Générale");
+		
+		
 
 		ISpecialiteDao specialiteDao = new SpecialiteDaoCsv("specialites.csv");
 		specialiteDao.create(generaliste);
@@ -63,8 +65,10 @@ public class ProgrammeTest {
 		specialiteDao.delete(specialitesFromCsv.get(specialitesFromCsv.size() - 1));
 		
 		
-		jekyll.getSpecialites().add(generaliste);
-		// generaliste.getPraticiens().add(jekyll); // A discuter ?
+		generaliste.getPraticiens().add(jekyll);
+		// jekyll.getSpecialites().add(generaliste);
+		specialiteDao.update(generaliste);
+		
 
 		Lieu clinique = new Lieu("Clinique de la Victoire");
 		clinique.setCommentaires("Se présenter à l'accueil");
@@ -76,6 +80,8 @@ public class ProgrammeTest {
 		adresseDao.create(adrClinique);
 
 		clinique.setAdr(adrClinique);
+		
+		lieuDao.update(clinique);
 
 		clinique.setPraticien(jekyll);
 		// jekyll.getLieux().add(clinique); // à discuter
