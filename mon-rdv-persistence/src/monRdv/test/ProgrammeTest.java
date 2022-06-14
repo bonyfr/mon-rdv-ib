@@ -29,11 +29,11 @@ public class ProgrammeTest {
 	public static void main(String[] args) throws ParseException {
 		IAdresseDao adresseDao = new AdresseDaoCsv("adresses.csv");
 		ILieuDao lieuDao = new LieuDaoCsv("lieux.csv");
-<<<<<<< HEAD
+
 		IPracticienDao practicienDao = new PracticienDaoCsv("practiciens.csv");
-=======
+
 		IPatientDao patientDao = new PatientDaoCsv("patients.csv");
->>>>>>> 46b5c86c648a0b79e45257bd3b1ca64f54fc96cb
+
 		
 		Praticien jekyll = new Praticien("JEKYLL", "Henri");
 		jekyll.setEmail("dr.jekyll@gmail.com");
