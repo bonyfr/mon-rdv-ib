@@ -119,6 +119,7 @@ public class PracticienDaoCsv implements IPracticienDao {
 
                     Praticien praticien = new Praticien(nom, prenom);
                     praticien.setMatricule(matricule);
+                    praticien.setId(id);
 
                     praticiens.add(praticien);
                 }
