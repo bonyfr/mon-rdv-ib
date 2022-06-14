@@ -21,6 +21,22 @@ public class Specialite {
 	}
 
 
+	public Specialite( String nom, String description) {
+		super();
+		this.nom = nom;
+		this.description = description;
+	}
+
+
+
+	public Specialite(Long id, String nom, String description) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.description = description;
+	}
+
+
 
 	public Long getId() {
 		return id;
