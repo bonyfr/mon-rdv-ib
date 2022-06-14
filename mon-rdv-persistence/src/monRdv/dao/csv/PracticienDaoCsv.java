@@ -26,10 +26,17 @@ public class PracticienDaoCsv implements IPracticienDao {
     public void create(Praticien obj) {
         List<Praticien> praticiens = readAll();
 
-        // Check that matricule doesn't exist else do not add it
-        if (findById(obj.getMatricule()) != null) {
-            praticiens.add(obj);
+        Long max = 0L;
+        
+        for (Praticien praticien : praticiens) {
+            if(praticien.getId() > max) {
+                max = praticien.getId();
+            }
         }
+
+        obj.setId(++max);
+
+        praticiens.add(obj);
 
         writeAll(praticiens);
     }
@@ -61,11 +68,12 @@ public class PracticienDaoCsv implements IPracticienDao {
     }
 
     @Override
-    public Praticien findById(String id) {
+    public Praticien findById(Long id) {
         // Find by matricule
         List<Praticien> praticiens = readAll();
+
         for (Praticien praticien : praticiens) {
-            if (praticien.getMatricule().equals(id)) {
+            if (praticien.getId().equals(id)) {
                 return praticien;
             }
         }
@@ -82,7 +90,7 @@ public class PracticienDaoCsv implements IPracticienDao {
         for (; pos < praticiens.size(); pos++) {
             Praticien praticien = praticiens.get(pos);
 
-            if (praticien.getMatricule().equals(obj.getMatricule())) {
+            if (praticien.getId().equals(obj.getId())) {
                 find = true;
                 break;
             }
@@ -104,9 +112,10 @@ public class PracticienDaoCsv implements IPracticienDao {
                 for (String ligne : lignes) {
                     String[] items = ligne.split(";");
 
-                    String matricule = items[0];
+                    Long id = Long.valueOf(items[0]);
                     String nom = items[1];
                     String prenom = items[2];
+                    String matricule = items[3];
 
                     Praticien praticien = new Praticien(nom, prenom);
                     praticien.setMatricule(matricule);
@@ -127,11 +136,13 @@ public class PracticienDaoCsv implements IPracticienDao {
         for (Praticien praticien : praticiens) {
             StringBuilder sb = new StringBuilder();
 
-            sb.append(praticien.getMatricule())
+            sb.append(praticien.getId())
                     .append(";")
                     .append(praticien.getNom())
                     .append(";")
-                    .append(praticien.getPrenom());
+                    .append(praticien.getPrenom())
+                    .append(";")
+                    .append(praticien.getMatricule());
 
             lignes.add(sb.toString());
         }
