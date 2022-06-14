@@ -65,8 +65,9 @@ public class ProgrammeTest {
 		specialiteDao.delete(specialitesFromCsv.get(specialitesFromCsv.size() - 1));
 		
 		
-		jekyll.getSpecialites().add(generaliste);
-		// generaliste.getPraticiens().add(jekyll); // A discuter ?
+		generaliste.getPraticiens().add(jekyll);
+		// jekyll.getSpecialites().add(generaliste);
+		
 
 		Lieu clinique = new Lieu("Clinique de la Victoire");
 		clinique.setCommentaires("Se présenter à l'accueil");
@@ -78,6 +79,8 @@ public class ProgrammeTest {
 		adresseDao.create(adrClinique);
 
 		clinique.setAdr(adrClinique);
+		
+		lieuDao.update(clinique);
 
 		clinique.setPraticien(jekyll);
 		// jekyll.getLieux().add(clinique); // à discuter
