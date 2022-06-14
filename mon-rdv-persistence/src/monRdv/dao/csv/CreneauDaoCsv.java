@@ -13,12 +13,15 @@ import java.util.Date;
 import java.util.List;
 
 import monRdv.dao.ICreneauDao;
+import monRdv.dao.ILieuDao;
 import monRdv.exception.MonRdvPersistenceException;
 import monRdv.model.Creneau;
+import monRdv.model.Lieu;
 
 public class CreneauDaoCsv implements ICreneauDao {
 
 	private final String chemin; 
+	private ILieuDao lieuDao = new LieuDaoCsv("lieux.csv"); 
 	
 	public CreneauDaoCsv(String chemin) {
 		super(); 
@@ -125,10 +128,15 @@ public class CreneauDaoCsv implements ICreneauDao {
 					Long id = Long.valueOf(items[0]);
 					Date date = new SimpleDateFormat("dd/MM/yyyy").parse(items[1]); 
 					int duree = Integer.parseInt(items[2]); 
-
+					Long idLieu = !items[3].isEmpty() ? Long.valueOf(items[3]) : null; 
 					Creneau creneau = new Creneau(date, duree);
 					creneau.setId(id);
 
+					if (idLieu != null) {
+						Lieu lieu = lieuDao.findById(idLieu); 
+						creneau.setLieu(lieu);
+					}
+					
 					creneaux.add(creneau);
 				}
 			}
@@ -151,6 +159,9 @@ public class CreneauDaoCsv implements ICreneauDao {
 			sb.append(creneau.getDate()).append(";");
 			sb.append(creneau.getDuree()).append(";");
 
+			if(creneau.getLieu() != null && creneau.getLieu().getId() != null) {
+				sb.append(creneau.getLieu().getId());
+			}
 
 			lignes.add(sb.toString());
 		}
