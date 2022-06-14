@@ -9,11 +9,9 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-import monRdv.dao.IAdresseDao;
 import monRdv.dao.IMotifDao;
 import monRdv.dao.IPracticienDao;
 import monRdv.exception.MonRdvPersistenceException;
-import monRdv.model.Adresse;
 import monRdv.model.Motif;
 import monRdv.model.Praticien;
 
