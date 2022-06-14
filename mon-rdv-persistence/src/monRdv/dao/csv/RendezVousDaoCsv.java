@@ -6,20 +6,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import monRdv.dao.IPatientDao;
 import monRdv.dao.IRendezVousDao;
 import monRdv.exception.MonRdvPersistenceException;
+import monRdv.model.Patient;
 import monRdv.model.RendezVous;
 import monRdv.model.Statut;
 
 public class RendezVousDaoCsv implements IRendezVousDao {
 
-	private final String chemin; 
+	private final String chemin;
+	private IPatientDao patientDao = new PatientDaoCsv("patients.csv");
 	
 	public RendezVousDaoCsv(String chemin) {
 		super(); 
@@ -124,10 +124,17 @@ public class RendezVousDaoCsv implements IRendezVousDao {
 					String[] items = ligne.split(";");
 					
 					Long id = Long.valueOf(items[0]);
-					Statut statut = Statut.valueOf(items[1]); 
+					Statut statut = Statut.valueOf(items[1]);
+					Long idPatient = !items[2].isEmpty() ? Long.valueOf(items[2]) : null;
 
 					RendezVous rendezVous = new RendezVous();
 					rendezVous.setId(id);
+					rendezVous.setStatut(statut);
+					
+					if(idPatient != null) {
+						Patient patient = patientDao.findById(idPatient);
+						rendezVous.setPatient(patient);
+					}
 
 					rendezVousS.add(rendezVous);
 				}
@@ -148,7 +155,10 @@ public class RendezVousDaoCsv implements IRendezVousDao {
 			sb.append(rendezVous.getId()).append(";");
 			sb.append(rendezVous.getStatut()).append(";");
 
-
+			if(rendezVous.getPatient() != null && rendezVous.getPatient().getId() != null) {
+				sb.append(rendezVous.getPatient().getId());
+			}
+			
 			lignes.add(sb.toString());
 		}
 

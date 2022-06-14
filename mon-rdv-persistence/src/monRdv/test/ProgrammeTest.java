@@ -7,10 +7,12 @@ import java.util.List;
 import monRdv.dao.IAdresseDao;
 import monRdv.dao.ILieuDao;
 import monRdv.dao.IPracticienDao;
+import monRdv.dao.IRendezVousDao;
 import monRdv.dao.ISpecialiteDao;
 import monRdv.dao.csv.AdresseDaoCsv;
 import monRdv.dao.csv.LieuDaoCsv;
 import monRdv.dao.csv.PracticienDaoCsv;
+import monRdv.dao.csv.RendezVousDaoCsv;
 import monRdv.dao.csv.SpecialiteDaoCsv;
 import monRdv.dao.IPatientDao;
 import monRdv.dao.csv.PatientDaoCsv;
@@ -23,6 +25,7 @@ import monRdv.model.Patient;
 import monRdv.model.Praticien;
 import monRdv.model.RendezVous;
 import monRdv.model.Specialite;
+import monRdv.model.Statut;
 
 public class ProgrammeTest {
 
@@ -34,6 +37,7 @@ public class ProgrammeTest {
 
 		IPatientDao patientDao = new PatientDaoCsv("patients.csv");
 
+		IRendezVousDao rendezVousDao = new RendezVousDaoCsv("rendezvous.csv");
 		
 		Praticien jekyll = new Praticien("JEKYLL", "Henri");
 		jekyll.setEmail("dr.jekyll@gmail.com");
@@ -67,7 +71,6 @@ public class ProgrammeTest {
 		
 		generaliste.getPraticiens().add(jekyll);
 		// jekyll.getSpecialites().add(generaliste);
-		specialiteDao.update(generaliste);
 		
 
 		Lieu clinique = new Lieu("Clinique de la Victoire");
@@ -133,7 +136,11 @@ public class ProgrammeTest {
 
 		RendezVous rendezVousDupont = new RendezVous();
 
+
 		rendezVousDupont.setPatient(dupont);
+		rendezVousDupont.setStatut(Statut.VALIDER);
+		
+		rendezVousDao.create(rendezVousDupont);
 		// dupont.getRendezVous().add(rendezVousDupont); // à discuter
 
 		rendezVousDupont.setMotif(premiereConsultation);
