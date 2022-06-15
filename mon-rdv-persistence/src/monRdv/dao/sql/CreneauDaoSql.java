@@ -13,7 +13,6 @@ import java.util.List;
 import monRdv.Singleton;
 import monRdv.dao.ICreneauDao;
 import monRdv.exception.MonRdvPersistenceException;
-import monRdv.model.Adresse;
 import monRdv.model.Creneau;
 import monRdv.model.Lieu;
 import monRdv.model.Praticien;
@@ -169,24 +168,24 @@ public class CreneauDaoSql implements ICreneauDao {
 			
 			ps.setDate(1, new java.sql.Date(obj.getDate().getTime()));
 			ps.setInt(2, obj.getDuree());
-			ps.setLong(3, obj.getId());
+			ps.setLong(6, obj.getId());
 			
 			if(obj.getPraticien() != null && obj.getPraticien().getId() != null) {
-				ps.setLong(4, obj.getPraticien().getId());
+				ps.setLong(3, obj.getPraticien().getId());
+			} else {
+				ps.setNull(3, Types.INTEGER);
+			}
+			
+			if(obj.getLieu() != null && obj.getLieu().getId() != null) {
+				ps.setLong(4, obj.getLieu().getId());
 			} else {
 				ps.setNull(4, Types.INTEGER);
 			}
 			
-			if(obj.getLieu() != null && obj.getLieu().getId() != null) {
-				ps.setLong(5, obj.getLieu().getId());
+			if(obj.getRendezVous() != null && obj.getRendezVous().getId() != null) {
+				ps.setLong(5, obj.getRendezVous().getId());
 			} else {
 				ps.setNull(5, Types.INTEGER);
-			}
-			
-			if(obj.getRendezVous() != null && obj.getRendezVous().getId() != null) {
-				ps.setLong(6, obj.getRendezVous().getId());
-			} else {
-				ps.setNull(6, Types.INTEGER);
 			}
 			int rows = ps.executeUpdate();
 			

@@ -12,7 +12,6 @@ import java.util.List;
 import monRdv.Singleton;
 import monRdv.dao.IMotifDao;
 import monRdv.exception.MonRdvPersistenceException;
-import monRdv.model.Adresse;
 import monRdv.model.Motif;
 import monRdv.model.Praticien;
 

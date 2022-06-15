@@ -121,6 +121,8 @@ public class ProgrammeTest {
 
 		creneau0800.setPraticien(jekyll);
 		// jekyll.getCreneaux().add(creneau0800); // à discuter
+		
+		Singleton.getInstance().getCreneauDao().create(creneau0800);
 
 		Creneau creneau0815 = new Creneau(sdf.parse("20/06/2022 08:15"), 15);
 		creneau0815.setDuree(15);
@@ -130,6 +132,8 @@ public class ProgrammeTest {
 
 		creneau0815.setPraticien(jekyll);
 		// jekyll.getCreneaux().add(creneau0815); // à discuter
+		
+		Singleton.getInstance().getCreneauDao().create(creneau0815);
 
 		Creneau creneau0830 = new Creneau(sdf.parse("20/06/2022 08:30"), 15);
 
@@ -138,6 +142,8 @@ public class ProgrammeTest {
 
 		creneau0830.setPraticien(jekyll);
 		// jekyll.getCreneaux().add(creneau0830); // à discuter
+		
+		Singleton.getInstance().getCreneauDao().create(creneau0830);
 
 		Creneau creneau0845 = new Creneau(sdf.parse("20/06/2022 08:45"), 15);
 
@@ -146,6 +152,7 @@ public class ProgrammeTest {
 
 		creneau0845.setPraticien(jekyll);
 		// jekyll.getCreneaux().add(creneau0845); // à discuter
+		Singleton.getInstance().getCreneauDao().create(creneau0845);
 
 		RendezVous rendezVousDupont = new RendezVous();
 
@@ -161,9 +168,13 @@ public class ProgrammeTest {
 
 		creneau0800.setRendezVous(rendezVousDupont);
 		// rendezVousDupont.getCreneaux().add(creneau0800); // à discuter
+		
+		Singleton.getInstance().getCreneauDao().update(creneau0800);
 
 		creneau0815.setRendezVous(rendezVousDupont);
 		// rendezVousDupont.getCreneaux().add(creneau0815); // à discuter
+		
+		Singleton.getInstance().getCreneauDao().update(creneau0815);
 	}
 
 }
