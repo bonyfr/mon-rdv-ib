@@ -57,10 +57,13 @@ public class ProgrammeTest {
 		Singleton.getInstance().getSpecialiteDao().delete(specialitesFromCsv.get(specialitesFromCsv.size() - 1));
 		
 		
+		Specialite dentiste = new Specialite("Dentiste", "Dentiste");
+		Singleton.getInstance().getSpecialiteDao().create(dentiste);
+		
 		generaliste.getPraticiens().add(jekyll);
 		// jekyll.getSpecialites().add(generaliste);
 		
-		specialiteDao.update(generaliste);
+		Singleton.getInstance().getSpecialiteDao().update(generaliste);
 		
 		Praticien house = new Praticien("HOUSE", "hugh");
 		house.setEmail("dr.house@gmail.com");
@@ -72,8 +75,8 @@ public class ProgrammeTest {
 		dentiste.getPraticiens().add(house);
 		generaliste.getPraticiens().add(house);
 		
-		specialiteDao.update(generaliste);
-		specialiteDao.update(dentiste);
+		Singleton.getInstance().getSpecialiteDao().update(generaliste);
+		Singleton.getInstance().getSpecialiteDao().update(dentiste);
 		
 		Lieu clinique = new Lieu("Clinique de la Victoire");
 		clinique.setCommentaires("Se présenter à l'accueil");
