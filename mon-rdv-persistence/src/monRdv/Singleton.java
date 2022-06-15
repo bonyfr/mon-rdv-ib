@@ -14,10 +14,10 @@ import monRdv.dao.IRendezVousDao;
 import monRdv.dao.ISpecialiteDao;
 import monRdv.dao.csv.CreneauDaoCsv;
 import monRdv.dao.csv.LieuDaoCsv;
-import monRdv.dao.csv.PracticienDaoCsv;
 import monRdv.dao.sql.AdministrateurDaoSql;
 import monRdv.dao.sql.AdresseDaoSql;
 import monRdv.dao.sql.PatientDaoSql;
+import monRdv.dao.sql.PracticienDaoSql;
 import monRdv.dao.sql.RendezVousDaoSql;
 import monRdv.dao.sql.SpecialiteDaoSql;
 
@@ -29,7 +29,7 @@ public class Singleton {
 	private final ICreneauDao creneauDao = new CreneauDaoCsv("creneaux.csv");
 	private final ILieuDao lieuDao = new LieuDaoCsv("lieux.csv");
 	private final IPatientDao patientDao = new PatientDaoSql();
-	private final IPracticienDao practicienDao = new PracticienDaoCsv("practiciens.csv");
+	private final IPracticienDao practicienDao = new PracticienDaoSql();
 	private final IRendezVousDao rendezVousDao = new RendezVousDaoSql();
 	private final ISpecialiteDao specialiteDao = new SpecialiteDaoSql();
 	
