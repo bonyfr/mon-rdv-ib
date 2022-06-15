@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import monRdv.Singleton;
+import monRdv.dao.IPracticienDao;
 import monRdv.dao.ISpecialiteDao;
 import monRdv.exception.MonRdvPersistenceException;
+import monRdv.model.Praticien;
 import monRdv.model.Specialite;
 
 public class SpecialiteDaoSql implements ISpecialiteDao {
@@ -33,7 +35,17 @@ public class SpecialiteDaoSql implements ISpecialiteDao {
 				
 				Specialite specialite = new Specialite(nom, description);
 				specialite.setId(id);
-
+				
+				PreparedStatement psLien = connection
+						.prepareStatement("SELECT praticien_id, specialite_id FROM specialite_praticien WHERE specialite_id = ?");
+				psLien.setLong(1, id);
+				ResultSet rsLien = psLien.executeQuery();
+				while(rsLien.next())
+				{
+					Long praticienId = rsLien.getLong("praticien_id");
+					IPracticienDao daoPraticien = Singleton.getInstance().getPracticienDao();
+					specialite.getPraticiens().add(daoPraticien.findById(praticienId));
+				}
 				specialites.add(specialite);
 			}
 		} catch (SQLException e) {
@@ -62,6 +74,17 @@ public class SpecialiteDaoSql implements ISpecialiteDao {
 				
 				specialite = new Specialite(nom, description);
 				specialite.setId(id);
+				
+				PreparedStatement psLien = connection
+						.prepareStatement("SELECT praticien_id  FROM specialite WHERE specialite_id = ?");
+				psLien.setLong(1, id);
+				ResultSet rsLien = psLien.executeQuery();
+				while(rsLien.next())
+				{
+					Long praticienId = rsLien.getLong("praticien_id");
+					IPracticienDao daoPraticien = Singleton.getInstance().getPracticienDao();
+					specialite.getPraticiens().add(daoPraticien.findById(praticienId));
+				}
 
 			}
 		} catch (SQLException e) {
@@ -93,6 +116,21 @@ public class SpecialiteDaoSql implements ISpecialiteDao {
 				Long id = rs.getLong(1);
 				obj.setId(id);
 			}
+			
+			for(Praticien praticien : obj.getPraticiens())
+			{
+				PreparedStatement psLien = connection
+						.prepareStatement("INSERT INTO specialite_praticien (specialite_id, praticien_id) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+				
+				psLien.setLong(1, obj.getId());
+				psLien.setLong(2, praticien.getId());
+				
+				rows = psLien.executeUpdate();
+				
+				if(rows != 1) {
+					throw new MonRdvPersistenceException("Insert Specialite en Erreur");
+				}
+			}
 
 		} catch (SQLException e) {
 			throw new MonRdvPersistenceException(e);
@@ -115,6 +153,30 @@ public class SpecialiteDaoSql implements ISpecialiteDao {
 			if(rows != 1) {
 				throw new MonRdvPersistenceException("Update Specialite en Erreur");
 			}
+			
+			if(obj.getPraticiens().size() > 0)
+			{
+				PreparedStatement psClean = connection
+						.prepareStatement("DELETE FROM specialite_praticien WHERE specialite_id = ?");
+				psClean.setLong(1, obj.getId());
+				rows = psClean.executeUpdate();
+
+				for(Praticien praticien : obj.getPraticiens())
+				{
+					PreparedStatement psLien = connection
+							.prepareStatement("INSERT INTO specialite_praticien (specialite_id, praticien_id) VALUES (?, ?)");
+					
+					psLien.setLong(1, obj.getId());
+					psLien.setLong(2, praticien.getId());
+					
+					rows = psLien.executeUpdate();
+					
+					if(rows != 1) {
+						throw new MonRdvPersistenceException("Insert Specialite en Erreur");
+					}
+				}
+				
+			}
 
 		} catch (SQLException e) {
 			throw new MonRdvPersistenceException(e);
@@ -134,6 +196,15 @@ public class SpecialiteDaoSql implements ISpecialiteDao {
 			
 			if(rows != 1) {
 				throw new MonRdvPersistenceException("Delete Specialite en Erreur");
+			}
+			
+			if(obj.getPraticiens().size() > 0)
+			{
+				PreparedStatement psLien = connection
+						.prepareStatement("DELETE FROM specialite_praticien WHERE specialite_id = ?");
+				
+				psLien.setLong(1, obj.getId());
+				rows = psLien.executeUpdate();				
 			}
 
 		} catch (SQLException e) {
