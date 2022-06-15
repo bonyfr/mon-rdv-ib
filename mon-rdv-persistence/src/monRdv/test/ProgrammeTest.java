@@ -36,7 +36,7 @@ public class ProgrammeTest {
 		jekyll.setMatricule("8888888");
 
 		practicienDao.create(jekyll);
-
+		
 		Patient dupont = new Patient(Civilite.M, "DUPONT", "Pierre");
 		dupont.setEmail("pierre.dupont@gmail.com");
 		dupont.setMotDePasse("P@assword");
@@ -99,15 +99,18 @@ public class ProgrammeTest {
 		// jekyll.getLieux().add(clinique); // à discuter
 
 		Motif premiereConsultation = new Motif("Première Consultation", 30);
-
 		premiereConsultation.setPraticien(jekyll);
 		// jekyll.getMotifs().add(premiereConsultation); // à discuter
+		
+		Singleton.getInstance().getMotifDao().create(premiereConsultation);
 
 		Motif suiviConsultation = new Motif("Consultation suivi", 15);
 
 		suiviConsultation.setPraticien(jekyll);
 		// jekyll.getMotifs().add(suiviConsultation); // à discuter
 
+		Singleton.getInstance().getMotifDao().create(suiviConsultation);
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 		Creneau creneau0800 = new Creneau(sdf.parse("20/06/2022 08:00"), 15);
