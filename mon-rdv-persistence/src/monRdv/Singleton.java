@@ -12,15 +12,14 @@ import monRdv.dao.IPatientDao;
 import monRdv.dao.IPracticienDao;
 import monRdv.dao.IRendezVousDao;
 import monRdv.dao.ISpecialiteDao;
-import monRdv.dao.csv.CreneauDaoCsv;
-import monRdv.dao.csv.PatientDaoCsv;
-import monRdv.dao.csv.PracticienDaoCsv;
-import monRdv.dao.csv.SpecialiteDaoCsv;
 import monRdv.dao.sql.AdministrateurDaoSql;
 import monRdv.dao.sql.AdresseDaoSql;
 import monRdv.dao.sql.CreneauDaoSql;
 import monRdv.dao.sql.LieuDaoSql;
+import monRdv.dao.sql.PatientDaoSql;
+import monRdv.dao.sql.PracticienDaoSql;
 import monRdv.dao.sql.RendezVousDaoSql;
+import monRdv.dao.sql.SpecialiteDaoSql;
 
 public class Singleton {
 	private static Singleton instance = null;
@@ -29,10 +28,10 @@ public class Singleton {
 	private final IAdresseDao adresseDao = new AdresseDaoSql();
 	private final ICreneauDao creneauDao = new CreneauDaoSql();
 	private final ILieuDao lieuDao = new LieuDaoSql();
-	private final IPatientDao patientDao = new PatientDaoCsv("patients.csv");
-	private final IPracticienDao practicienDao = new PracticienDaoCsv("practiciens.csv");
+	private final IPatientDao patientDao = new PatientDaoSql();
+	private final IPracticienDao practicienDao = new PracticienDaoSql();
 	private final IRendezVousDao rendezVousDao = new RendezVousDaoSql();
-	private final ISpecialiteDao specialiteDao = new SpecialiteDaoCsv("specialites.csv");
+	private final ISpecialiteDao specialiteDao = new SpecialiteDaoSql();
 	
 	private Singleton() {
 		try {
