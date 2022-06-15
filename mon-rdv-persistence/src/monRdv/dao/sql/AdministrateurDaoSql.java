@@ -86,7 +86,7 @@ public class AdministrateurDaoSql implements IAdministrateurDao {
 		try (Connection connection = Singleton.getInstance().getConnection()) {
 
 			PreparedStatement ps = connection.prepareStatement(
-					"INSERT INTO administrateur (disc, nom, prenom, email, mot_de_passe) VALUES (?, ?, ?, ?, ?)",
+					"INSERT INTO utilisateur (disc, nom, prenom, email, mot_de_passe) VALUES (?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 
 			ps.setString(1, "Administrateur");
@@ -118,7 +118,7 @@ public class AdministrateurDaoSql implements IAdministrateurDao {
 		try (Connection connection = Singleton.getInstance().getConnection()) {
 
 			PreparedStatement ps = connection.prepareStatement(
-					"UPDATE administrateur SET nom = ?, prenom = ?, email = ?, mot_de_passe = ? WHERE id = ? AND disc = ?");
+					"UPDATE utilisateur SET nom = ?, prenom = ?, email = ?, mot_de_passe = ? WHERE id = ? AND disc = ?");
 
 			ps.setString(1, obj.getNom());
 			ps.setString(2, obj.getPrenom());
@@ -142,7 +142,7 @@ public class AdministrateurDaoSql implements IAdministrateurDao {
 	public void delete(Administrateur obj) {
 		try (Connection connection = Singleton.getInstance().getConnection()) {
 
-			PreparedStatement ps = connection.prepareStatement("DELETE FROM administrateur WHERE id = ? AND disc = ?");
+			PreparedStatement ps = connection.prepareStatement("DELETE FROM utilisateur WHERE id = ? AND disc = ?");
 
 			ps.setLong(1, obj.getId());
 			ps.setString(2, "Administrateur");
