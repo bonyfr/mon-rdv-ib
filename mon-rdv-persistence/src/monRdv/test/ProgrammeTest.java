@@ -60,7 +60,21 @@ public class ProgrammeTest {
 		generaliste.getPraticiens().add(jekyll);
 		// jekyll.getSpecialites().add(generaliste);
 		
+		specialiteDao.update(generaliste);
+		
+		Praticien house = new Praticien("HOUSE", "hugh");
+		house.setEmail("dr.house@gmail.com");
+		house.setMotDePasse("HouseMD");
+		house.setMatricule("888888");
 
+		practicienDao.create(house);
+		
+		dentiste.getPraticiens().add(house);
+		generaliste.getPraticiens().add(house);
+		
+		specialiteDao.update(generaliste);
+		specialiteDao.update(dentiste);
+		
 		Lieu clinique = new Lieu("Clinique de la Victoire");
 		clinique.setCommentaires("Se présenter à l'accueil");
 		
