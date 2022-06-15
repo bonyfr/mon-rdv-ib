@@ -152,11 +152,12 @@ public class ProgrammeTest {
 
 		rendezVousDupont.setPatient(dupont);
 		rendezVousDupont.setStatut(Statut.VALIDER);
+		rendezVousDupont.setMotif(premiereConsultation);
 		
 		rendezVousDao.create(rendezVousDupont);
 		// dupont.getRendezVous().add(rendezVousDupont); // à discuter
 
-		rendezVousDupont.setMotif(premiereConsultation);
+		
 
 		creneau0800.setRendezVous(rendezVousDupont);
 		// rendezVousDupont.getCreneaux().add(creneau0800); // à discuter
