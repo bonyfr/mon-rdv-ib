@@ -3,9 +3,15 @@ package monRdv.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+@Entity
+@DiscriminatorValue("praticien")
 public class Praticien extends Utilisateur {
+	@Column(length = 20)
 	private String matricule;
 	@Transient
 	private List<Motif> motifs = new ArrayList<Motif>();

@@ -3,12 +3,23 @@ package monRdv.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Transient;
 
+@Entity
+@DiscriminatorValue("patient")
 public class Patient extends Utilisateur {
+	@Column(length = 10)
+	@Enumerated(EnumType.STRING)
 	private Civilite civilite;
+	@Column(name="numero_ss", length = 20)
 	private String numeroSS;
 	private int age;
+	@Column(length = 20)
 	private String telephone;
 	@Transient
 	private Adresse adresse;
