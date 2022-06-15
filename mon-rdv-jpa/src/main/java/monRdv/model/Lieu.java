@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -21,9 +24,11 @@ public class Lieu {
 	private String nom;
 	@Column(length = 1000)
 	private String commentaires;
-	@Transient
+	@OneToOne
+	@JoinColumn(name="adr_id")
 	private Adresse adr;
-	@Transient
+	@ManyToOne
+	@JoinColumn(name="praticien_id")
 	private Praticien praticien;
 	@Transient
 	private List<Creneau> creneaux = new ArrayList<Creneau>();

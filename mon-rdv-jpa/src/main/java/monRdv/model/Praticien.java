@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 @Entity
@@ -17,7 +18,7 @@ public class Praticien extends Utilisateur {
 	private List<Motif> motifs = new ArrayList<Motif>();
 	@Transient
 	private List<Creneau> creneaux = new ArrayList<Creneau>();
-	@Transient
+	@OneToMany(mappedBy = "praticien")
 	private List<Lieu> lieux = new ArrayList<Lieu>();
 	@Transient
 	private List<Specialite> specialites = new ArrayList<Specialite>();
