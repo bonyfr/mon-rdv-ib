@@ -165,7 +165,9 @@ public class LieuDaoCsv implements ILieuDao {
 			sb.append(lieu.getCommentaires()).append(";");
 			
 			if(lieu.getAdr() != null && lieu.getAdr().getId() != null) {
-				sb.append(lieu.getAdr().getId());
+				sb.append(lieu.getAdr().getId()).append(";");
+			} else {
+				sb.append(";");
 			}
 
 			if(lieu.getPraticien() != null && lieu.getPraticien().getId() != null){
