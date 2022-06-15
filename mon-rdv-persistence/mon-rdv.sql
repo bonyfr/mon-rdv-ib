@@ -76,8 +76,10 @@ CREATE TABLE IF NOT EXISTS rendez_vous
     id bigserial NOT NULL,
 	statut character varying(20),
 	patient_id bigint,
+	motif_id bigint,
     CONSTRAINT rendez_vous_pkey PRIMARY KEY (id),
-	CONSTRAINT rendez_vous_praticien_fk FOREIGN KEY (patient_id) REFERENCES utilisateur (id)
+	CONSTRAINT rendez_vous_praticien_fk FOREIGN KEY (patient_id) REFERENCES utilisateur (id),
+	CONSTRAINT rendez_vous_motif_fk FOREIGN KEY (motif_id) REFERENCES motif (id)
 );
 
 CREATE TABLE IF NOT EXISTS creneau
