@@ -22,7 +22,7 @@ public class MotifDaoSql implements IMotifDao {
 		try (Connection connection = Singleton.getInstance().getConnection()) {
 
 			PreparedStatement ps = connection
-					.prepareStatement("SELECT id, titre, duree FROM Motif");
+					.prepareStatement("SELECT id, titre, duree FROM motif");
 
 			ResultSet rs = ps.executeQuery();
 
@@ -75,7 +75,7 @@ public class MotifDaoSql implements IMotifDao {
 		try (Connection connection = Singleton.getInstance().getConnection()) {
 
 			PreparedStatement ps = connection
-					.prepareStatement("INSERT INTO adresse (titre, duree) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+					.prepareStatement("INSERT INTO motif (titre, duree) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
 			
 			ps.setString(1, obj.getTitre());
 			ps.setLong(2, obj.getDuree());
