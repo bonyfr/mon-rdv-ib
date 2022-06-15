@@ -8,11 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
-@Table(name="specialite")
+@Table(name = "specialite")
 public class Specialite {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,28 +23,26 @@ public class Specialite {
 	private String nom;
 	@Column(length = 1000)
 	private String description;
-	@Transient
+	@ManyToMany
+	@JoinTable( name = "specialite_praticien", 
+				joinColumns = @JoinColumn(name = "specialite_id"), 
+				inverseJoinColumns = @JoinColumn(name = "praticien_id"))
 	private List<Praticien> praticiens = new ArrayList<Praticien>();
 
 	public Specialite() {
 		super();
 	}
-	
-	
 
 	public Specialite(String nom) {
 		super();
 		this.nom = nom;
 	}
 
-
-	public Specialite( String nom, String description) {
+	public Specialite(String nom, String description) {
 		super();
 		this.nom = nom;
 		this.description = description;
 	}
-
-
 
 	public Specialite(Long id, String nom, String description) {
 		super();
@@ -50,8 +50,6 @@ public class Specialite {
 		this.nom = nom;
 		this.description = description;
 	}
-
-
 
 	public Long getId() {
 		return id;

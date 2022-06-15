@@ -6,21 +6,21 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("praticien")
 public class Praticien extends Utilisateur {
 	@Column(length = 20)
 	private String matricule;
-	@Transient
+	@OneToMany(mappedBy = "praticien")
 	private List<Motif> motifs = new ArrayList<Motif>();
-	@Transient
+	@OneToMany(mappedBy = "praticien")
 	private List<Creneau> creneaux = new ArrayList<Creneau>();
 	@OneToMany(mappedBy = "praticien")
 	private List<Lieu> lieux = new ArrayList<Lieu>();
-	@Transient
+	@ManyToMany(mappedBy = "praticiens")
 	private List<Specialite> specialites = new ArrayList<Specialite>();
 
 	public Praticien() {

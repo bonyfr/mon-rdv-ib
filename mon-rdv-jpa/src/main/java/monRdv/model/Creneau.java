@@ -6,10 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+
 
 @Entity
 @Table(name="creneau")
@@ -20,11 +22,14 @@ public class Creneau {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	private int duree;
-	@Transient
+	@ManyToOne
+	@JoinColumn(name="praticien_id")
 	private Praticien praticien;
-	@Transient
+	@ManyToOne
+	@JoinColumn(name="rendez_vous_id")
 	private RendezVous rendezVous;
-	@Transient
+	@ManyToOne
+	@JoinColumn(name="lieu_id")
 	private Lieu lieu;
 
 	public Creneau() {

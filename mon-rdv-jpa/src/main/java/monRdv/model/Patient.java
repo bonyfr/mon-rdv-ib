@@ -8,7 +8,9 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Transient;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 @DiscriminatorValue("patient")
@@ -21,9 +23,10 @@ public class Patient extends Utilisateur {
 	private int age;
 	@Column(length = 20)
 	private String telephone;
-	@Transient
+	@OneToOne
+	@JoinColumn(name="adresse_id")
 	private Adresse adresse;
-	@Transient
+	@OneToMany(mappedBy = "patient")
 	private List<RendezVous> rendezVous = new ArrayList<RendezVous>();
 	
 	public Patient(Civilite civilite, String nom, String prenom) {

@@ -10,8 +10,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name="rendez_vous")
@@ -22,11 +25,13 @@ public class RendezVous {
 	@Column(length = 20)
 	@Enumerated(EnumType.STRING)
 	private Statut statut;
-	@Transient
+	@ManyToOne
+	@JoinColumn(name="patient_id")
 	private Patient patient;
-	@Transient
+	@OneToOne
+	@JoinColumn(name="motif_id")
 	private Motif motif;
-	@Transient
+	@OneToMany(mappedBy = "rendezVous")
 	private List<Creneau> creneaux = new ArrayList<Creneau>();
 
 	public RendezVous() {

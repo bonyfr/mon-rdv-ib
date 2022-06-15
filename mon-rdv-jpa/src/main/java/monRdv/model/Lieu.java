@@ -10,9 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name="lieu")
@@ -30,7 +30,7 @@ public class Lieu {
 	@ManyToOne
 	@JoinColumn(name="praticien_id")
 	private Praticien praticien;
-	@Transient
+	@OneToMany(mappedBy = "lieu")
 	private List<Creneau> creneaux = new ArrayList<Creneau>();
 
 	public Lieu() {
