@@ -85,7 +85,11 @@ public class ProgrammeTest {
 
 		Adresse adrClinique = new Adresse("1 rue de la Paix", "3ème étage", "75008", "Paris");
 		
+		System.out.println("avant=" + adrClinique.getId());
+		
 		adresseDao.create(adrClinique);
+		
+		System.out.println("après=" + adrClinique.getId());
 
 		clinique.setAdr(adrClinique);
 		
