@@ -80,6 +80,7 @@ public class ProgrammeTest {
 		
 		Lieu clinique = new Lieu("Clinique de la Victoire");
 		clinique.setCommentaires("Se présenter à l'accueil");
+		clinique.setPraticien(house);
 		
 		lieuDao.create(clinique);
 

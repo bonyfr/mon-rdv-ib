@@ -5,12 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
 import monRdv.Singleton;
 import monRdv.dao.IRendezVousDao;
 import monRdv.exception.MonRdvPersistenceException;
+import monRdv.model.Motif;
+import monRdv.model.Patient;
 import monRdv.model.RendezVous;
 import monRdv.model.Statut;
 
@@ -23,18 +26,30 @@ public class RendezVousDaoSql implements IRendezVousDao {
 		try (Connection connection = Singleton.getInstance().getConnection()) {
 
 			PreparedStatement ps = connection
-					.prepareStatement("SELECT id, statut FROM rendez_vous");
+					.prepareStatement("SELECT id, statut, patient_id, motif_id FROM rendez_vous");
 
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				Long id = rs.getLong("id");
 				String statut = rs.getString("statut");
+				Long patientId = rs.getLong("patient_id");
+				Long motifId = rs.getLong("motif_id");
 
 				RendezVous rendezVous = new RendezVous();
 				rendezVous.setId(id);
 				if(statut != null && !statut.isEmpty()) {
 					rendezVous.setStatut(Statut.valueOf(statut));
+				}
+				
+				if(patientId != null) {
+					Patient patient = Singleton.getInstance().getPatientDao().findById(patientId);
+					rendezVous.setPatient(patient);
+				}
+				
+				if(motifId != null) {
+					Motif motif = Singleton.getInstance().getMotifDao().findById(motifId);
+					rendezVous.setMotif(motif);
 				}
 
 				rendezVouss.add(rendezVous);
@@ -53,19 +68,31 @@ public class RendezVousDaoSql implements IRendezVousDao {
 		try (Connection connection = Singleton.getInstance().getConnection()) {
 
 			PreparedStatement ps = connection
-					.prepareStatement("SELECT statut FROM rendez_vous WHERE id = ?");
+					.prepareStatement("SELECT statut, patient_id, motif_id FROM rendez_vous WHERE id = ?");
 			
 			ps.setLong(1, id);
+			
 
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
 				String statut = rs.getString("statut");
+				Long patientId = rs.getLong("patient_id");
+				Long motifId = rs.getLong("motif_id");
 
 				rendezVous = new RendezVous();
 				rendezVous.setId(id);
 				if(statut != null && !statut.isEmpty()) {
 					rendezVous.setStatut(Statut.valueOf(statut));
+				}
+				if(patientId != null) {
+					Patient patient = Singleton.getInstance().getPatientDao().findById(patientId);
+					rendezVous.setPatient(patient);
+				}
+				
+				if(motifId != null) {
+					Motif motif = Singleton.getInstance().getMotifDao().findById(motifId);
+					rendezVous.setMotif(motif);
 				}
 			}
 		} catch (SQLException e) {
@@ -80,9 +107,21 @@ public class RendezVousDaoSql implements IRendezVousDao {
 		try (Connection connection = Singleton.getInstance().getConnection()) {
 
 			PreparedStatement ps = connection
-					.prepareStatement("INSERT INTO rendez_vous (statut) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
+					.prepareStatement("INSERT INTO rendez_vous (statut, patient_id, motif_id) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 			
 			ps.setString(1, obj.getStatut().name());
+			
+			if(obj.getPatient() != null && obj.getPatient().getId() != null) {
+				ps.setLong(2, obj.getPatient().getId());
+			} else {
+				ps.setNull(2, Types.INTEGER);
+			}
+			
+			if(obj.getMotif() != null && obj.getMotif().getId() != null) {
+				ps.setLong(3, obj.getMotif().getId());
+			} else {
+				ps.setNull(3, Types.INTEGER);
+			}
 			
 			int rows = ps.executeUpdate();
 			
@@ -107,10 +146,22 @@ public class RendezVousDaoSql implements IRendezVousDao {
 		try (Connection connection = Singleton.getInstance().getConnection()) {
 
 			PreparedStatement ps = connection
-					.prepareStatement("UPDATE rendez_vous SET statut = ? WHERE id = ?");
+					.prepareStatement("UPDATE rendez_vous SET statut = ?, patient_id = ?, motif_id = ? WHERE id = ?");
 			
 			ps.setString(1, obj.getStatut().name());
-			ps.setLong(2, obj.getId());
+			ps.setLong(4, obj.getId());
+			
+			if(obj.getPatient() != null && obj.getPatient().getId() != null) {
+				ps.setLong(2, obj.getPatient().getId());
+			} else {
+				ps.setNull(2, Types.INTEGER);
+			}
+			
+			if(obj.getMotif() != null && obj.getMotif().getId() != null) {
+				ps.setLong(3, obj.getMotif().getId());
+			} else {
+				ps.setNull(3, Types.INTEGER);
+			}
 			
 			int rows = ps.executeUpdate();
 			
