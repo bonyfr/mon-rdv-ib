@@ -9,8 +9,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import monRdv.Singleton;
 import monRdv.dao.IMotifDao;
-import monRdv.dao.IPracticienDao;
 import monRdv.exception.MonRdvPersistenceException;
 import monRdv.model.Motif;
 import monRdv.model.Praticien;
@@ -19,8 +19,7 @@ import monRdv.model.Praticien;
 public class MotifDaoCsv implements IMotifDao {
 
 	private final String chemin;
-	private IPracticienDao praticienDao = new PracticienDaoCsv("praticien.csv");
-
+	
 	public MotifDaoCsv(String chemin) {
 		super();
 		this.chemin = chemin;
@@ -109,7 +108,7 @@ public class MotifDaoCsv implements IMotifDao {
 					motif.setId(id);
 
 					if(idPraticien != null) {
-						Praticien praticien = praticienDao.findById(idPraticien);
+						Praticien praticien = Singleton.getInstance().getPracticienDao().findById(idPraticien);
 						motif.setPraticien(praticien);
 					}
 

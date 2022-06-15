@@ -12,7 +12,6 @@ import java.util.List;
 import monRdv.dao.IPatientDao;
 import monRdv.exception.MonRdvPersistenceException;
 import monRdv.model.Civilite;
-import monRdv.model.Lieu;
 import monRdv.model.Patient;
 
 public class PatientDaoCsv implements IPatientDao{

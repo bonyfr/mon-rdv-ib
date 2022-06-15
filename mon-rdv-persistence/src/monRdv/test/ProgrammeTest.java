@@ -4,18 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import monRdv.Singleton;
 import monRdv.dao.IAdresseDao;
 import monRdv.dao.ILieuDao;
 import monRdv.dao.IPracticienDao;
 import monRdv.dao.IRendezVousDao;
-import monRdv.dao.ISpecialiteDao;
-import monRdv.dao.csv.AdresseDaoCsv;
-import monRdv.dao.csv.LieuDaoCsv;
-import monRdv.dao.csv.PracticienDaoCsv;
-import monRdv.dao.csv.RendezVousDaoCsv;
-import monRdv.dao.csv.SpecialiteDaoCsv;
 import monRdv.dao.IPatientDao;
-import monRdv.dao.csv.PatientDaoCsv;
 import monRdv.model.Adresse;
 import monRdv.model.Civilite;
 import monRdv.model.Creneau;
@@ -30,14 +24,11 @@ import monRdv.model.Statut;
 public class ProgrammeTest {
 
 	public static void main(String[] args) throws ParseException {
-		IAdresseDao adresseDao = new AdresseDaoCsv("adresses.csv");
-		ILieuDao lieuDao = new LieuDaoCsv("lieux.csv");
-
-		IPracticienDao practicienDao = new PracticienDaoCsv("practiciens.csv");
-
-		IPatientDao patientDao = new PatientDaoCsv("patients.csv");
-
-		IRendezVousDao rendezVousDao = new RendezVousDaoCsv("rendezvous.csv");
+		IAdresseDao adresseDao = Singleton.getInstance().getAdresseDao();
+		ILieuDao lieuDao = Singleton.getInstance().getLieuDao();
+		IPracticienDao practicienDao = Singleton.getInstance().getPracticienDao();
+		IPatientDao patientDao = Singleton.getInstance().getPatientDao();
+		IRendezVousDao rendezVousDao = Singleton.getInstance().getRendezVousDao();
 		
 		Praticien jekyll = new Praticien("JEKYLL", "Henri");
 		jekyll.setEmail("dr.jekyll@gmail.com");
@@ -58,15 +49,12 @@ public class ProgrammeTest {
 		Specialite generaliste = new Specialite("Généraliste");
 		generaliste.setDescription("Médecine Générale");
 		
-		
-
-		ISpecialiteDao specialiteDao = new SpecialiteDaoCsv("specialites.csv");
-		specialiteDao.create(generaliste);
+		Singleton.getInstance().getSpecialiteDao().create(generaliste);
 		
 		Specialite bidoniste = new Specialite("Bidon", "Bidon");
-		specialiteDao.create(bidoniste);
-		List<Specialite> specialitesFromCsv = specialiteDao.findAll();
-		specialiteDao.delete(specialitesFromCsv.get(specialitesFromCsv.size() - 1));
+		Singleton.getInstance().getSpecialiteDao().create(bidoniste);
+		List<Specialite> specialitesFromCsv = Singleton.getInstance().getSpecialiteDao().findAll();
+		Singleton.getInstance().getSpecialiteDao().delete(specialitesFromCsv.get(specialitesFromCsv.size() - 1));
 		
 		
 		generaliste.getPraticiens().add(jekyll);

@@ -9,7 +9,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-import monRdv.dao.IPatientDao;
+import monRdv.Singleton;
 import monRdv.dao.IRendezVousDao;
 import monRdv.exception.MonRdvPersistenceException;
 import monRdv.model.Patient;
@@ -19,7 +19,6 @@ import monRdv.model.Statut;
 public class RendezVousDaoCsv implements IRendezVousDao {
 
 	private final String chemin;
-	private IPatientDao patientDao = new PatientDaoCsv("patients.csv");
 	
 	public RendezVousDaoCsv(String chemin) {
 		super(); 
@@ -132,7 +131,7 @@ public class RendezVousDaoCsv implements IRendezVousDao {
 					rendezVous.setStatut(statut);
 					
 					if(idPatient != null) {
-						Patient patient = patientDao.findById(idPatient);
+						Patient patient = Singleton.getInstance().getPatientDao().findById(idPatient);
 						rendezVous.setPatient(patient);
 					}
 

@@ -9,16 +9,13 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-import monRdv.dao.IAdresseDao;
-import monRdv.dao.IPracticienDao;
+import monRdv.Singleton;
 import monRdv.dao.ISpecialiteDao;
 import monRdv.exception.MonRdvPersistenceException;
 import monRdv.model.Praticien;
 import monRdv.model.Specialite;
 
 public class SpecialiteDaoCsv implements ISpecialiteDao {
-	private IPracticienDao praticienDao = new PracticienDaoCsv("practiciens.csv");
-
 	private final String chemin;
 	private final String cheminLien = "praticien_specialite.csv";
 
@@ -137,7 +134,7 @@ public class SpecialiteDaoCsv implements ISpecialiteDao {
 							{
 								if(liens[1] == id.toString())
 								{
-									Praticien praticien = praticienDao.findById(Long.valueOf(liens[0]));
+									Praticien praticien = Singleton.getInstance().getPracticienDao().findById(Long.valueOf(liens[0]));
 									if(praticien == null) {
 										throw new MonRdvPersistenceException("Unable to find praticient id"+liens[0]);
 									}

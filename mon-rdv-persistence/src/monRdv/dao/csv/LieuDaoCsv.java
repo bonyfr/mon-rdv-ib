@@ -9,9 +9,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-import monRdv.dao.IAdresseDao;
+import monRdv.Singleton;
 import monRdv.dao.ILieuDao;
-import monRdv.dao.IPracticienDao;
 import monRdv.exception.MonRdvPersistenceException;
 import monRdv.model.Adresse;
 import monRdv.model.Lieu;
@@ -20,8 +19,6 @@ import monRdv.model.Praticien;
 public class LieuDaoCsv implements ILieuDao {
 
 	private final String chemin;
-	private IPracticienDao practicienDao = new PracticienDaoCsv("practicien.csv"); 
-	private IAdresseDao adresseDao = new AdresseDaoCsv("adresses.csv");
 
 	public LieuDaoCsv(String chemin) {
 		super();
@@ -135,12 +132,12 @@ public class LieuDaoCsv implements ILieuDao {
 					lieu.setCommentaires(commentaires);
 					
 					if(idAdresse != null) {
-						Adresse adresse = adresseDao.findById(idAdresse);
+						Adresse adresse = Singleton.getInstance().getAdresseDao().findById(idAdresse);
 						lieu.setAdr(adresse);
 					}
 
 					if (idPrac != null) {
-						Praticien praticien = practicienDao.findById(idPrac);
+						Praticien praticien = Singleton.getInstance().getPracticienDao().findById(idPrac);
 						lieu.setPraticien(praticien);
 					}
 

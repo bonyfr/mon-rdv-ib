@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import monRdv.Singleton;
 import monRdv.dao.ICreneauDao;
-import monRdv.dao.ILieuDao;
 import monRdv.exception.MonRdvPersistenceException;
 import monRdv.model.Creneau;
 import monRdv.model.Lieu;
@@ -21,7 +21,6 @@ import monRdv.model.Lieu;
 public class CreneauDaoCsv implements ICreneauDao {
 
 	private final String chemin; 
-	private ILieuDao lieuDao = new LieuDaoCsv("lieux.csv"); 
 	
 	public CreneauDaoCsv(String chemin) {
 		super(); 
@@ -133,7 +132,7 @@ public class CreneauDaoCsv implements ICreneauDao {
 					creneau.setId(id);
 
 					if (idLieu != null) {
-						Lieu lieu = lieuDao.findById(idLieu); 
+						Lieu lieu = Singleton.getInstance().getLieuDao().findById(idLieu); 
 						creneau.setLieu(lieu);
 					}
 					
