@@ -135,7 +135,7 @@ public class SpecialiteDaoCsv implements ISpecialiteDao {
 							String[] liens = ligneLien.split(";");
 							if(liens.length > 1)
 							{
-								if(liens[1] == id.toString())
+								if(Long.valueOf(liens[1]) == id)
 								{
 									Praticien praticien = praticienDao.findById(Long.valueOf(liens[0]));
 									if(praticien == null) {
@@ -172,7 +172,7 @@ public class SpecialiteDaoCsv implements ISpecialiteDao {
 			lignes.add(sb.toString());
 			StringBuilder sbLien = new StringBuilder();
 			for(Praticien praticien : specialite.getPraticiens()) {
-				sbLien.append(praticien.getId()).append(";").append(specialite.getId());
+				sbLien.append(praticien.getId()).append(";").append(specialite.getId()).append(System.lineSeparator());
 			}
 			lignesLien.add(sbLien.toString());
 		}
