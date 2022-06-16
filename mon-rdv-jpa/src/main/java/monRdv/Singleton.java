@@ -11,6 +11,7 @@ import monRdv.dao.IRendezVousDao;
 import monRdv.dao.ISpecialiteDao;
 import monRdv.dao.IUtilisateurDao;
 import monRdv.dao.jpa.AdresseDaoJpa;
+import monRdv.dao.jpa.CreneauDaoJpa;
 import monRdv.dao.jpa.SpecialiteDaoJpa;
 
 public class Singleton {
@@ -19,7 +20,7 @@ public class Singleton {
 	private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("mon-rdv-jpa");
 
 	private final IAdresseDao adresseDao = new AdresseDaoJpa();
-	private final ICreneauDao creneauDao = null;
+	private final ICreneauDao creneauDao = new CreneauDaoJpa();
 	private final ILieuDao lieuDao = null;
 	private final IMotifDao motifDao = null;
 	private final IRendezVousDao rendezVousDao = null;
