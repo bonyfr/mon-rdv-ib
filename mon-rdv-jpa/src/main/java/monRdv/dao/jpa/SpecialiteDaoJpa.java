@@ -125,4 +125,37 @@ public class SpecialiteDaoJpa  implements ISpecialiteDao {
 		}
 	}
 
+	@Override
+	public Specialite findByIdWithPraticiens(Long id) {
+		Specialite specialite = null;
+		
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = Singleton.getInstance().getEmf().createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();	
+			
+			TypedQuery<Specialite> query = em.createQuery("select s from Specialite s left join fetch s.praticiens where s.id = :id", Specialite.class);
+			
+			query.setParameter("id", id);
+			
+			specialite = query.getSingleResult();
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			throw new MonRdvPersistenceException(e);
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+		
+		return specialite;
+	}
+
 }

@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import monRdv.Singleton;
 import monRdv.dao.ISpecialiteDao;
-import monRdv.model.Praticien;
 import monRdv.model.Specialite;
 
 public class SpecialiteDaoTest {
@@ -24,11 +23,11 @@ public class SpecialiteDaoTest {
 
 		Long idSpecialite = specialite.getId();
 
-		Specialite specialiteFind = specialiteDao.findById(idSpecialite);
+		Specialite specialiteFind = specialiteDao.findByIdWithPraticiens(idSpecialite);
 
 		Assert.assertEquals("Généraliste", specialiteFind.getNom());
 		Assert.assertEquals("Médecine Générale", specialiteFind.getDescription());
-//		Assert.assertEquals(specialiteFind.getPraticiens().size(), 0);
+		Assert.assertEquals(specialiteFind.getPraticiens().size(), 0);
 
 		
 		specialite.setNom("Dentiste");
