@@ -3,8 +3,14 @@ package monRdv.test;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import monRdv.Singleton;
 import monRdv.dao.IAdresseDao;
+import monRdv.dao.ICreneauDao;
 import monRdv.dao.ILieuDao;
 import monRdv.dao.IUtilisateurDao;
 import monRdv.model.Lieu;
@@ -16,10 +22,12 @@ import monRdv.model.Creneau;
 public class LieuDaoTest {
 
 	@Test
-	public void Lieu() {	
+	public void Lieu() throws ParseException {	
 		IAdresseDao adresseDao = Singleton.getInstance().getAdresseDao();
 		ILieuDao lieuDao = Singleton.getInstance().getLieuDao();
 		IUtilisateurDao utilisateurDao = Singleton.getInstance().getUtilisateurDao();
+		ICreneauDao creneauDao = Singleton.getInstance().getCreneauDao();
+		
 		
 		Adresse adresse = new Adresse("1 rue de la Paix", "3ème étage", "75008", "Paris");
 		adresse = adresseDao.save(adresse);
@@ -36,9 +44,13 @@ public class LieuDaoTest {
 		Lieu lieu = new Lieu("Hopital");
 		lieu.setCommentaires("Urgence");
 		lieu.setAdr(adresse);
-		lieu.setPraticien(house);
-		
+		lieu.setPraticien(house);	
 		lieu = lieuDao.save(lieu);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Creneau creneau0830 = new Creneau(sdf.parse("20/06/2022 08:30"), 15);
+		creneau0830.setLieu(lieu);
+		creneau0830 = creneauDao.save(creneau0830);
 		
 		Long idLieu = lieu.getId();
 		
@@ -73,6 +85,8 @@ public class LieuDaoTest {
 		int sizeEnd = lieuDao.findAll().size();
 		
 		Assert.assertEquals(1, sizeEnd - sizeStart);
+		
+		creneauDao.delete(creneau0830);
 		
 		lieuDao.delete(lieu);
 
