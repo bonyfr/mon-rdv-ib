@@ -6,11 +6,17 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.TypedQuery;
+
+import monRdv.Singleton;
+import monRdv.exception.MonRdvPersistenceException;
 
 @Entity
 @DiscriminatorValue("patient")

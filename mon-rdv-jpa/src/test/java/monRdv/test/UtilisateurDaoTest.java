@@ -1,18 +1,27 @@
 package monRdv.test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.Assert;
 
 import monRdv.Singleton;
+import monRdv.dao.ICreneauDao;
+import monRdv.dao.IRendezVousDao;
 import monRdv.dao.IUtilisateurDao;
 import monRdv.model.Civilite;
+import monRdv.model.Creneau;
 import monRdv.model.Patient;
 import monRdv.model.Praticien;
+import monRdv.model.RendezVous;
 
 public class UtilisateurDaoTest {
 
     IUtilisateurDao utilisateurDao = Singleton.getInstance().getUtilisateurDao();
+    IRendezVousDao rendezVousDao = Singleton.getInstance().getRendezVousDao();
+    ICreneauDao creneauDao = Singleton.getInstance().getCreneauDao();
 
     @Test
     public void patient() {
@@ -43,13 +52,19 @@ public class UtilisateurDaoTest {
 
         Assert.assertEquals( utilisateurDao.findAll().size() - sizeStart, 1);
 
-        utilisateurDao.delete(testPatient);
+        RendezVous rendezVousDupont = new RendezVous();
+        rendezVousDupont.setPatient(dupont);
+        rendezVousDupont = rendezVousDao.save(rendezVousDupont);
+        
+        dupont = (Patient) utilisateurDao.findByIdwithRendezVous(dupont.getId());
 
-        Assert.assertEquals(sizeStart, utilisateurDao.findAll().size());
+        Assert.assertNotNull(dupont.getRendezVous());
+        Assert.assertEquals(dupont.getRendezVous().get(0).getId(), dupont.getRendezVous().get(0).getId());
+
     }
 
     @Test
-    public void practicien() {
+    public void practicien() throws ParseException {
         int sizeStart = utilisateurDao.findAll().size();
 
         Praticien jekyll = new Praticien("JEKYLL", "Henri");
@@ -72,9 +87,16 @@ public class UtilisateurDaoTest {
 
         Assert.assertEquals( utilisateurDao.findAll().size() - sizeStart, 1);
 
-        utilisateurDao.delete(hyde);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Creneau creneau0800 = new Creneau(sdf.parse("20/06/2022 08:00"), 15);
+        creneau0800.setPraticien(hyde);
 
-        Assert.assertEquals(sizeStart, utilisateurDao.findAll().size());
+        creneau0800 = creneauDao.save(creneau0800);
+
+        hyde = (Praticien) utilisateurDao.findByIdwithCreneau(hyde.getId());
+
+        Assert.assertNotNull(hyde.getCreneaux());
+        Assert.assertEquals(hyde.getCreneaux().get(0).getId(), creneau0800.getId());
     }
 
     @Test

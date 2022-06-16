@@ -292,4 +292,72 @@ public class UtilisateurDaoJpa implements IUtilisateurDao {
 		return patients;
 	}
 
+	@Override
+	public Patient findByIdwithRendezVous(Long id) {
+		Patient patient = null;
+
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = Singleton.getInstance().getEmf().createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();	
+			
+			TypedQuery<Patient> query = em.createQuery("select p from Patient p left join fetch p.rendezVous where p.id = :id", Patient.class);
+			
+			query.setParameter("id", id);
+			
+			patient = query.getSingleResult();
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			throw new MonRdvPersistenceException(e);
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+		
+		return patient;
+	}
+
+	@Override
+	public Praticien findByIdwithCreneau(Long id) {
+		Praticien praticien = null;
+
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = Singleton.getInstance().getEmf().createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();	
+			
+			TypedQuery<Praticien> query = em.createQuery("select p from Praticien p left join fetch p.creneaux where p.id = :id", Praticien.class);
+			
+			query.setParameter("id", id);
+			
+			praticien = query.getSingleResult();
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			throw new MonRdvPersistenceException(e);
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+		
+		return praticien;
+	}
+
+	
+
 }
