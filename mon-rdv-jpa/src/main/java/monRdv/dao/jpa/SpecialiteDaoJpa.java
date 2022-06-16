@@ -9,7 +9,6 @@ import javax.persistence.TypedQuery;
 import monRdv.Singleton;
 import monRdv.dao.ISpecialiteDao;
 import monRdv.exception.MonRdvPersistenceException;
-import monRdv.model.Adresse;
 import monRdv.model.Specialite;
 
 public class SpecialiteDaoJpa  implements ISpecialiteDao {
