@@ -14,7 +14,6 @@ public class JpaTest {
 
 	public static void main(String[] args) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("mon-rdv-jpa");
-
 		
 		Adresse adrClinique = new Adresse("1 rue de la Paix", "3ème étage", "75008", "Paris"); // new (ou transient)
 		
@@ -26,7 +25,13 @@ public class JpaTest {
 			tx = em.getTransaction();
 			tx.begin();	
 
-			em.persist(adrClinique); // managed
+//			em.persist(adrClinique); // managed
+//			
+//			System.out.println(adrClinique.getId());
+			
+			adrClinique = em.merge(adrClinique);
+			
+			System.out.println(adrClinique.getId());
 
 			adrClinique.setComplement("2ème étage"); // dirty checking => synchronisation automatique
 

@@ -7,9 +7,8 @@ import java.util.List;
 import monRdv.Singleton;
 import monRdv.dao.IAdresseDao;
 import monRdv.dao.ILieuDao;
-import monRdv.dao.IPracticienDao;
 import monRdv.dao.IRendezVousDao;
-import monRdv.dao.IPatientDao;
+import monRdv.dao.IUtilisateurDao;
 import monRdv.model.Adresse;
 import monRdv.model.Civilite;
 import monRdv.model.Creneau;
@@ -26,17 +25,16 @@ public class ProgrammeTest {
 	public static void main(String[] args) throws ParseException {
 		IAdresseDao adresseDao = Singleton.getInstance().getAdresseDao();
 		ILieuDao lieuDao = Singleton.getInstance().getLieuDao();
-		IPracticienDao practicienDao = Singleton.getInstance().getPracticienDao();
-		IPatientDao patientDao = Singleton.getInstance().getPatientDao();
 		IRendezVousDao rendezVousDao = Singleton.getInstance().getRendezVousDao();
+		IUtilisateurDao utilisateurDao = Singleton.getInstance().getUtilisateurDao();
 		
 		Praticien jekyll = new Praticien("JEKYLL", "Henri");
 		jekyll.setEmail("dr.jekyll@gmail.com");
 		jekyll.setMotDePasse("Hyde");
 		jekyll.setMatricule("8888888");
 
-		practicienDao.create(jekyll);
-		
+		jekyll = (Praticien) utilisateurDao.save(jekyll);
+
 		Patient dupont = new Patient(Civilite.M, "DUPONT", "Pierre");
 		dupont.setEmail("pierre.dupont@gmail.com");
 		dupont.setMotDePasse("P@assword");
@@ -44,57 +42,56 @@ public class ProgrammeTest {
 		dupont.setNumeroSS("1 85 33 14 745");
 		dupont.setTelephone("06 06 06 06 06");
 
-		patientDao.create(dupont);
-		
+		dupont = (Patient) utilisateurDao.save(dupont);
+
 		Specialite generaliste = new Specialite("Généraliste");
 		generaliste.setDescription("Médecine Générale");
-		
-		Singleton.getInstance().getSpecialiteDao().create(generaliste);
-		
+
+		generaliste = Singleton.getInstance().getSpecialiteDao().save(generaliste);
+
 		Specialite bidoniste = new Specialite("Bidon", "Bidon");
-		Singleton.getInstance().getSpecialiteDao().create(bidoniste);
+		bidoniste = Singleton.getInstance().getSpecialiteDao().save(bidoniste);
 		List<Specialite> specialitesFromCsv = Singleton.getInstance().getSpecialiteDao().findAll();
 		Singleton.getInstance().getSpecialiteDao().delete(specialitesFromCsv.get(specialitesFromCsv.size() - 1));
-		
-		
+
 		Specialite dentiste = new Specialite("Dentiste", "Dentiste");
-		Singleton.getInstance().getSpecialiteDao().create(dentiste);
-		
+		dentiste = Singleton.getInstance().getSpecialiteDao().save(dentiste);
+
 		generaliste.getPraticiens().add(jekyll);
 		// jekyll.getSpecialites().add(generaliste);
-		
-		Singleton.getInstance().getSpecialiteDao().update(generaliste);
-		
+
+		generaliste = Singleton.getInstance().getSpecialiteDao().save(generaliste);
+
 		Praticien house = new Praticien("HOUSE", "hugh");
 		house.setEmail("dr.house@gmail.com");
 		house.setMotDePasse("HouseMD");
 		house.setMatricule("888888");
 
-		practicienDao.create(house);
-		
+		house = (Praticien) utilisateurDao.save(house);
+
 		dentiste.getPraticiens().add(house);
 		generaliste.getPraticiens().add(house);
-		
-		Singleton.getInstance().getSpecialiteDao().update(generaliste);
-		Singleton.getInstance().getSpecialiteDao().update(dentiste);
-		
+
+		generaliste = Singleton.getInstance().getSpecialiteDao().save(generaliste);
+		dentiste = Singleton.getInstance().getSpecialiteDao().save(dentiste);
+
 		Lieu clinique = new Lieu("Clinique de la Victoire");
 		clinique.setCommentaires("Se présenter à l'accueil");
 		clinique.setPraticien(house);
-		
-		lieuDao.create(clinique);
+
+		clinique = lieuDao.save(clinique);
 
 		Adresse adrClinique = new Adresse("1 rue de la Paix", "3ème étage", "75008", "Paris");
-		
+
 		System.out.println("avant=" + adrClinique.getId());
-		
-		adresseDao.create(adrClinique);
-		
+
+		adrClinique = adresseDao.save(adrClinique);
+
 		System.out.println("après=" + adrClinique.getId());
 
 		clinique.setAdr(adrClinique);
-		
-		lieuDao.update(clinique);
+
+		clinique = lieuDao.save(clinique);
 
 		clinique.setPraticien(jekyll);
 		// jekyll.getLieux().add(clinique); // à discuter
@@ -102,16 +99,16 @@ public class ProgrammeTest {
 		Motif premiereConsultation = new Motif("Première Consultation", 30);
 		premiereConsultation.setPraticien(jekyll);
 		// jekyll.getMotifs().add(premiereConsultation); // à discuter
-		
-		Singleton.getInstance().getMotifDao().create(premiereConsultation);
+
+		premiereConsultation = Singleton.getInstance().getMotifDao().save(premiereConsultation);
 
 		Motif suiviConsultation = new Motif("Consultation suivi", 15);
 
 		suiviConsultation.setPraticien(jekyll);
 		// jekyll.getMotifs().add(suiviConsultation); // à discuter
 
-		Singleton.getInstance().getMotifDao().create(suiviConsultation);
-		
+		suiviConsultation = Singleton.getInstance().getMotifDao().save(suiviConsultation);
+
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 		Creneau creneau0800 = new Creneau(sdf.parse("20/06/2022 08:00"), 15);
@@ -121,8 +118,8 @@ public class ProgrammeTest {
 
 		creneau0800.setPraticien(jekyll);
 		// jekyll.getCreneaux().add(creneau0800); // à discuter
-		
-		Singleton.getInstance().getCreneauDao().create(creneau0800);
+
+		creneau0800 = Singleton.getInstance().getCreneauDao().save(creneau0800);
 
 		Creneau creneau0815 = new Creneau(sdf.parse("20/06/2022 08:15"), 15);
 		creneau0815.setDuree(15);
@@ -132,8 +129,8 @@ public class ProgrammeTest {
 
 		creneau0815.setPraticien(jekyll);
 		// jekyll.getCreneaux().add(creneau0815); // à discuter
-		
-		Singleton.getInstance().getCreneauDao().create(creneau0815);
+
+		creneau0815 = Singleton.getInstance().getCreneauDao().save(creneau0815);
 
 		Creneau creneau0830 = new Creneau(sdf.parse("20/06/2022 08:30"), 15);
 
@@ -142,8 +139,8 @@ public class ProgrammeTest {
 
 		creneau0830.setPraticien(jekyll);
 		// jekyll.getCreneaux().add(creneau0830); // à discuter
-		
-		Singleton.getInstance().getCreneauDao().create(creneau0830);
+
+		creneau0830 = Singleton.getInstance().getCreneauDao().save(creneau0830);
 
 		Creneau creneau0845 = new Creneau(sdf.parse("20/06/2022 08:45"), 15);
 
@@ -152,29 +149,26 @@ public class ProgrammeTest {
 
 		creneau0845.setPraticien(jekyll);
 		// jekyll.getCreneaux().add(creneau0845); // à discuter
-		Singleton.getInstance().getCreneauDao().create(creneau0845);
+		creneau0845 = Singleton.getInstance().getCreneauDao().save(creneau0845);
 
 		RendezVous rendezVousDupont = new RendezVous();
-
 
 		rendezVousDupont.setPatient(dupont);
 		rendezVousDupont.setStatut(Statut.VALIDER);
 		rendezVousDupont.setMotif(premiereConsultation);
-		
-		rendezVousDao.create(rendezVousDupont);
-		// dupont.getRendezVous().add(rendezVousDupont); // à discuter
 
-		
+		rendezVousDupont = rendezVousDao.save(rendezVousDupont);
+		// dupont.getRendezVous().add(rendezVousDupont); // à discuter
 
 		creneau0800.setRendezVous(rendezVousDupont);
 		// rendezVousDupont.getCreneaux().add(creneau0800); // à discuter
-		
-		Singleton.getInstance().getCreneauDao().update(creneau0800);
+
+		creneau0800 = Singleton.getInstance().getCreneauDao().save(creneau0800);
 
 		creneau0815.setRendezVous(rendezVousDupont);
 		// rendezVousDupont.getCreneaux().add(creneau0815); // à discuter
-		
-		Singleton.getInstance().getCreneauDao().update(creneau0815);
+
+		creneau0815 = Singleton.getInstance().getCreneauDao().save(creneau0815);
 	}
 
 }

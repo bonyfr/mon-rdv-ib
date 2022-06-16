@@ -1,31 +1,29 @@
 package monRdv;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
-import monRdv.dao.IAdministrateurDao;
 import monRdv.dao.IAdresseDao;
 import monRdv.dao.ICreneauDao;
 import monRdv.dao.ILieuDao;
 import monRdv.dao.IMotifDao;
-import monRdv.dao.IPatientDao;
-import monRdv.dao.IPracticienDao;
 import monRdv.dao.IRendezVousDao;
 import monRdv.dao.ISpecialiteDao;
+import monRdv.dao.IUtilisateurDao;
+import monRdv.dao.jpa.AdresseDaoJpa;
 
 public class Singleton {
 	private static Singleton instance = null;
 
-	private final IAdministrateurDao administrateurDao = null;
-	private final IAdresseDao adresseDao = null;
+	private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("mon-rdv-jpa");
+
+	private final IAdresseDao adresseDao = new AdresseDaoJpa();
 	private final ICreneauDao creneauDao = null;
 	private final ILieuDao lieuDao = null;
 	private final IMotifDao motifDao = null;
-	private final IPatientDao patientDao = null;
-	private final IPracticienDao practicienDao = null;
 	private final IRendezVousDao rendezVousDao = null;
 	private final ISpecialiteDao specialiteDao = null;
+	private final IUtilisateurDao utilisateurDao = null;
 
 	private Singleton() {
 		try {
@@ -43,12 +41,8 @@ public class Singleton {
 		return instance;
 	}
 
-	public Connection getConnection() throws SQLException {
-		return DriverManager.getConnection("jdbc:postgresql://localhost:5432/mon_rdv", "postgres", "admin");
-	}
-
-	public IAdministrateurDao getAdministrateurDao() {
-		return administrateurDao;
+	public EntityManagerFactory getEmf() {
+		return emf;
 	}
 
 	public IAdresseDao getAdresseDao() {
@@ -67,20 +61,16 @@ public class Singleton {
 		return motifDao;
 	}
 
-	public IPatientDao getPatientDao() {
-		return patientDao;
-	}
-
-	public IPracticienDao getPracticienDao() {
-		return practicienDao;
-	}
-
 	public IRendezVousDao getRendezVousDao() {
 		return rendezVousDao;
 	}
 
 	public ISpecialiteDao getSpecialiteDao() {
 		return specialiteDao;
+	}
+
+	public IUtilisateurDao getUtilisateurDao() {
+		return utilisateurDao;
 	}
 
 }
