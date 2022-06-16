@@ -11,6 +11,7 @@ import monRdv.dao.IRendezVousDao;
 import monRdv.dao.ISpecialiteDao;
 import monRdv.dao.IUtilisateurDao;
 import monRdv.dao.jpa.AdresseDaoJpa;
+import monRdv.dao.jpa.SpecialiteDaoJpa;
 
 public class Singleton {
 	private static Singleton instance = null;
@@ -22,7 +23,7 @@ public class Singleton {
 	private final ILieuDao lieuDao = null;
 	private final IMotifDao motifDao = null;
 	private final IRendezVousDao rendezVousDao = null;
-	private final ISpecialiteDao specialiteDao = null;
+	private final ISpecialiteDao specialiteDao =  new SpecialiteDaoJpa();
 	private final IUtilisateurDao utilisateurDao = null;
 
 	private Singleton() {
