@@ -226,4 +226,70 @@ public class UtilisateurDaoJpa implements IUtilisateurDao {
 		return praticiens;
 	}
 
+	@Override
+	public Utilisateur findByEmail(String email) {
+		Utilisateur utilisateur = null;
+		
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = Singleton.getInstance().getEmf().createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();
+
+			TypedQuery<Utilisateur> query = em.createQuery("from Utilisateur u where u.email = :email", Utilisateur.class);
+
+			query.setParameter("email", email);
+			
+			utilisateur = query.getSingleResult();
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			throw new MonRdvPersistenceException(e);
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+		
+		return utilisateur;
+	}
+
+	@Override
+	public List<Patient> findAllPatientByVille(String ville) {
+		List<Patient> patients = null;
+				
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = Singleton.getInstance().getEmf().createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();
+
+			TypedQuery<Patient> query = em.createQuery("from Patient p join p.adresse a where a.ville = :ville", Patient.class);
+
+			query.setParameter("ville", ville);
+			
+			patients = query.getResultList();
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			throw new MonRdvPersistenceException(e);
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+		
+		return patients;
+	}
+
 }

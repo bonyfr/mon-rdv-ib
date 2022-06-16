@@ -6,6 +6,5 @@ import monRdv.model.Creneau;
 import monRdv.model.RendezVous;
 
 public interface IRendezVousDao extends IDao <RendezVous, Long>{
-    List<Creneau> findAllCreneau();
     List<RendezVous> findAllByPraticien(Long id);
 }

@@ -11,6 +11,6 @@ public interface IUtilisateurDao extends IDao<Utilisateur, Long>{
 	List<Administrateur> findAllAdministrateur();
 	List<Patient> findAllPatient();
 	List<Praticien> findAllPraticien();
-	List<Utilisateur> findByEmail(String email);
+	Utilisateur findByEmail(String email);
 	List<Patient> findAllPatientByVille(String ville);
 }
