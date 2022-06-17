@@ -156,7 +156,6 @@ public class ProgrammeTest {
 
 		RendezVous rendezVousDupont = new RendezVous();
 
-
 		rendezVousDupont.setPatient(dupont);
 		rendezVousDupont.setStatut(Statut.VALIDER);
 		rendezVousDupont.setMotif(premiereConsultation);

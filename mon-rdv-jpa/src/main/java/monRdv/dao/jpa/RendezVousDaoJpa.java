@@ -10,6 +10,7 @@ import monRdv.Singleton;
 import monRdv.dao.IRendezVousDao;
 import monRdv.exception.MonRdvPersistenceException;
 import monRdv.model.RendezVous;
+import monRdv.model.Specialite;
 
 public class RendezVousDaoJpa implements IRendezVousDao {
     @Override
@@ -158,6 +159,39 @@ public class RendezVousDaoJpa implements IRendezVousDao {
             }
         }
         
+		return rendezVous;
+	}
+
+	@Override
+	public RendezVous findByIdWithCreneau(Long id) {
+		RendezVous rendezVous = null;
+		
+		EntityManager em = null;
+		EntityTransaction tx = null;
+
+		try {
+			em = Singleton.getInstance().getEmf().createEntityManager();
+			tx = em.getTransaction();
+			tx.begin();	
+			
+			TypedQuery<RendezVous> query = em.createQuery("select rdv from RendezVous rdv left join fetch rdv.creneaux where rdv.id = :id", RendezVous.class);
+			
+			query.setParameter("id", id);
+			
+			rendezVous = query.getSingleResult();
+
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			throw new MonRdvPersistenceException(e);
+		} finally {
+			if (em != null) {
+				em.close();
+			}
+		}
+		
 		return rendezVous;
 	}
 
