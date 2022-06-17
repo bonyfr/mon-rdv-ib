@@ -1,29 +1,35 @@
 package monRdv.test;
 
-import java.text.SimpleDateFormat;
-
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import monRdv.Singleton;
+import monRdv.config.ApplicationConfig;
 import monRdv.dao.IMotifDao;
 import monRdv.dao.IRendezVousDao;
 import monRdv.dao.IUtilisateurDao;
 import monRdv.model.Civilite;
-import monRdv.model.Creneau;
 import monRdv.model.Motif;
 import monRdv.model.Patient;
 import monRdv.model.RendezVous;
 import monRdv.model.Statut;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
 public class RendezVousDaoTest {
+	
+	@Autowired
+	private IMotifDao motifDao;
+	@Autowired
+	private IRendezVousDao rendezVousDao;
+	@Autowired
+	private IUtilisateurDao utilisateurDao;
 
 	@Test
 	public void rendezVous() {
-		IRendezVousDao rendezVousDao = Singleton.getInstance().getRendezVousDao();
-		IUtilisateurDao patientDao = Singleton.getInstance().getUtilisateurDao();
-		IMotifDao motifDao = Singleton.getInstance().getMotifDao();
-
 		int sizeStart = rendezVousDao.findAll().size();
 
 		RendezVous rendezVous = new RendezVous();
@@ -31,7 +37,7 @@ public class RendezVousDaoTest {
 		Motif motif = new Motif(); 
 				
 		rendezVous = rendezVousDao.save(rendezVous);
-		patient = (Patient) patientDao.save(patient); 
+		patient = (Patient) utilisateurDao.save(patient); 
 		motif = motifDao.save(motif); 
 				
 			

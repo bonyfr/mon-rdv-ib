@@ -4,7 +4,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import monRdv.config.ApplicationConfig;
 import monRdv.dao.IAdresseDao;
@@ -25,18 +29,28 @@ import monRdv.model.RendezVous;
 import monRdv.model.Specialite;
 import monRdv.model.Statut;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
 public class ProgrammeTest {
 
-	public static void main(String[] args) throws ParseException {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+	@Autowired
+	private IAdresseDao adresseDao;
+	@Autowired
+	private ICreneauDao creneauDao;
+	@Autowired
+	private ILieuDao lieuDao;
+	@Autowired
+	private IMotifDao motifDao;
+	@Autowired
+	private IRendezVousDao rendezVousDao;
+	@Autowired
+	private ISpecialiteDao specialiteDao;
+	@Autowired
+	private IUtilisateurDao utilisateurDao;
+	
+	@Test
+	public void load() throws ParseException {	
 		
-		IAdresseDao adresseDao = context.getBean(IAdresseDao.class);
-		ICreneauDao creneauDao =  context.getBean(ICreneauDao.class);
-		ILieuDao lieuDao =  context.getBean(ILieuDao.class);
-		IMotifDao motifDao =  context.getBean(IMotifDao.class);
-		IRendezVousDao rendezVousDao =  context.getBean(IRendezVousDao.class);
-		ISpecialiteDao specialiteDao =  context.getBean(ISpecialiteDao.class);
-		IUtilisateurDao utilisateurDao =  context.getBean(IUtilisateurDao.class);
 		
 		Praticien jekyll = new Praticien("JEKYLL", "Henri");
 		jekyll.setEmail("dr.jekyll@gmail.com");
@@ -182,8 +196,6 @@ public class ProgrammeTest {
 		// rendezVousDupont.getCreneaux().add(creneau0815); // à discuter
 
 		creneau0815 = creneauDao.save(creneau0815);
-		
-		context.close();
 	}
 
 }

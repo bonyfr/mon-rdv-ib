@@ -2,22 +2,30 @@ package monRdv.test;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import monRdv.Singleton;
+import monRdv.config.ApplicationConfig;
 import monRdv.dao.ISpecialiteDao;
 import monRdv.dao.IUtilisateurDao;
 import monRdv.model.Praticien;
 import monRdv.model.Specialite;
 import monRdv.model.Utilisateur;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
 public class SpecialiteDaoTest {
 
+	@Autowired
+	private ISpecialiteDao specialiteDao;
+	@Autowired
+	private IUtilisateurDao utilisateurDao;
+	
 	@Test
 	public void specialite() {
-		ISpecialiteDao specialiteDao = Singleton.getInstance().getSpecialiteDao();
-		IUtilisateurDao praticienDao = Singleton.getInstance().getUtilisateurDao();
 		int sizeStart = specialiteDao.findAll().size();
-
 
 		Specialite specialite = new Specialite("Généraliste");
 		specialite.setDescription("Médecine Générale");
@@ -54,7 +62,7 @@ public class SpecialiteDaoTest {
 		jekyll.setEmail("dr.jekyll@gmail.com"); jekyll.setMotDePasse("Hyde");
 		jekyll.setMatricule("8888888");
 	  
-		Utilisateur jekyll2 = praticienDao.save(jekyll);
+		Utilisateur jekyll2 = utilisateurDao.save(jekyll);
 		jekyll.setId(jekyll2.getId());
 	  
 		specialite.getPraticiens().add(jekyll);
@@ -75,7 +83,7 @@ public class SpecialiteDaoTest {
 		house.setMotDePasse("HouseMD");
 		house.setMatricule("888888");
 		  
-		Utilisateur houseUtilisateur = praticienDao.save(jekyll);
+		Utilisateur houseUtilisateur = utilisateurDao.save(jekyll);
 		house.setId(houseUtilisateur.getId());
 		  
 		specialite.getPraticiens().add(house); 

@@ -2,20 +2,28 @@ package monRdv.test;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import monRdv.Singleton;
+import monRdv.config.ApplicationConfig;
 import monRdv.dao.IMotifDao;
 import monRdv.dao.IUtilisateurDao;
 import monRdv.model.Motif;
 import monRdv.model.Praticien;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
 public class MotifDaoTest {
+	
+	@Autowired
+	private IMotifDao motifDao;
+	@Autowired
+	private IUtilisateurDao utilisateurDao;
 
 	@Test
 	public void motif() {
-		IMotifDao motifDao = Singleton.getInstance().getMotifDao();
-		IUtilisateurDao utilisateurDao = Singleton.getInstance().getUtilisateurDao();
-
 		Praticien jekyll = new Praticien("JEKYLL", "Henri");
 	
 		jekyll = (Praticien) utilisateurDao.save(jekyll);

@@ -2,17 +2,24 @@ package monRdv.test;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import monRdv.Singleton;
+import monRdv.config.ApplicationConfig;
 import monRdv.dao.IAdresseDao;
 import monRdv.model.Adresse;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
 public class AdresseDaoTest {
+	
+	@Autowired
+	private IAdresseDao adresseDao;
 
 	@Test
 	public void adresse() {
-		IAdresseDao adresseDao = Singleton.getInstance().getAdresseDao();
-
 		int sizeStart = adresseDao.findAll().size();
 
 		Adresse adresse = new Adresse("1 rue de la Paix", "3ème étage", "75008", "Paris");

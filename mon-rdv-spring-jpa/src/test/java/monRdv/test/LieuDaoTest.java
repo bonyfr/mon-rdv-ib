@@ -2,13 +2,15 @@ package monRdv.test;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
-import monRdv.Singleton;
+import monRdv.config.ApplicationConfig;
 import monRdv.dao.IAdresseDao;
 import monRdv.dao.ICreneauDao;
 import monRdv.dao.ILieuDao;
@@ -19,14 +21,22 @@ import monRdv.model.Praticien;
 import monRdv.model.Utilisateur;
 import monRdv.model.Creneau;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
 public class LieuDaoTest {
+	
+	@Autowired
+	private IAdresseDao adresseDao;
+	@Autowired
+	private ILieuDao lieuDao;
+	@Autowired
+	private IUtilisateurDao utilisateurDao;
+	@Autowired
+	private ICreneauDao creneauDao;
 
 	@Test
 	public void Lieu() throws ParseException {	
-		IAdresseDao adresseDao = Singleton.getInstance().getAdresseDao();
-		ILieuDao lieuDao = Singleton.getInstance().getLieuDao();
-		IUtilisateurDao utilisateurDao = Singleton.getInstance().getUtilisateurDao();
-		ICreneauDao creneauDao = Singleton.getInstance().getCreneauDao();
+		
 		
 		
 		Adresse adresse = new Adresse("1 rue de la Paix", "3ème étage", "75008", "Paris");

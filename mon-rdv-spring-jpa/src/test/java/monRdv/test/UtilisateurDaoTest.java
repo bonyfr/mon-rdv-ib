@@ -1,18 +1,24 @@
 package monRdv.test;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import junit.framework.Assert;
-
-import monRdv.Singleton;
+import monRdv.config.ApplicationConfig;
 import monRdv.dao.IUtilisateurDao;
 import monRdv.model.Civilite;
 import monRdv.model.Patient;
 import monRdv.model.Praticien;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = ApplicationConfig.class)
 public class UtilisateurDaoTest {
 
-    IUtilisateurDao utilisateurDao = Singleton.getInstance().getUtilisateurDao();
+	@Autowired
+	private IUtilisateurDao utilisateurDao;
 
     @Test
     public void patient() {
