@@ -1,5 +1,7 @@
 package monRdv.test;
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +14,7 @@ import monRdv.dao.IMotifDao;
 import monRdv.dao.IUtilisateurDao;
 import monRdv.model.Motif;
 import monRdv.model.Praticien;
+import monRdv.model.RendezVous;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
@@ -37,7 +40,7 @@ public class MotifDaoTest {
 
 		Long idMotif = motif.getId();
 
-		Motif motifFind = motifDao.findById(idMotif);
+		Motif motifFind = motifDao.findById(idMotif).get();
 
 		Assert.assertEquals("Première Consultation", motifFind.getTitre());
 		Assert.assertEquals(30, motifFind.getDuree());
@@ -49,7 +52,7 @@ public class MotifDaoTest {
 
 		motif = motifDao.save(motif);
 
-		motifFind = motifDao.findById(idMotif);
+		motifFind = motifDao.findById(idMotif).get();
 
 		Assert.assertEquals("Consultation suivi", motifFind.getTitre());
 		Assert.assertEquals(15, motifFind.getDuree());
@@ -61,9 +64,9 @@ public class MotifDaoTest {
 
 		motifDao.delete(motif);
 
-		motifFind = motifDao.findById(idMotif);
+		Optional<Motif> optMotifFind = motifDao.findById(idMotif);
 
-		Assert.assertNull(motifFind);
+		Assert.assertFalse(optMotifFind.isPresent());
 		
 		int sizeEndAfterDelete = motifDao.findAll().size();
 

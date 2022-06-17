@@ -183,7 +183,7 @@ public class ProgrammeTest {
 
 		rendezVousDupont = rendezVousDao.save(rendezVousDupont);
 		
-		dupont = (Patient) utilisateurDao.findById(dupont.getId());
+		dupont = (Patient) utilisateurDao.findById(dupont.getId()).get();
 		
 		// dupont.getRendezVous().add(rendezVousDupont); // à discuter
 

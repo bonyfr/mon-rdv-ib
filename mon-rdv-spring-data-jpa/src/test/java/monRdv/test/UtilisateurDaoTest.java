@@ -34,7 +34,7 @@ public class UtilisateurDaoTest {
 
         dupont = (Patient) utilisateurDao.save(dupont);
 
-        Patient testPatient = (Patient) utilisateurDao.findById(dupont.getId());
+        Patient testPatient = (Patient) utilisateurDao.findById(dupont.getId()).get();
 
         Assert.assertNotNull(testPatient);
 
@@ -65,7 +65,7 @@ public class UtilisateurDaoTest {
 
         jekyll = (Praticien) utilisateurDao.save(jekyll);
 
-        Praticien hyde = (Praticien) utilisateurDao.findById(jekyll.getId());
+        Praticien hyde = (Praticien) utilisateurDao.findById(jekyll.getId()).get();
 
         Assert.assertNotNull(hyde);
             

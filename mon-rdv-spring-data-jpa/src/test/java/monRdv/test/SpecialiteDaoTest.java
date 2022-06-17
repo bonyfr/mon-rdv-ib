@@ -1,5 +1,7 @@
 package monRdv.test;
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +36,7 @@ public class SpecialiteDaoTest {
 
 		Long idSpecialite = specialite.getId();
 
-		Specialite specialiteFind = specialiteDao.findById(idSpecialite);
+		Specialite specialiteFind = specialiteDao.findById(idSpecialite).get();
 
 		Assert.assertEquals("Généraliste", specialiteFind.getNom());
 		Assert.assertEquals("Médecine Générale", specialiteFind.getDescription());
@@ -83,8 +85,7 @@ public class SpecialiteDaoTest {
 		house.setMotDePasse("HouseMD");
 		house.setMatricule("888888");
 		  
-		Utilisateur houseUtilisateur = utilisateurDao.save(jekyll);
-		house.setId(houseUtilisateur.getId());
+		house = utilisateurDao.save(house);
 		  
 		specialite.getPraticiens().add(house); 
 		specialite = specialiteDao.save(specialite); 
@@ -102,9 +103,9 @@ public class SpecialiteDaoTest {
 
 		specialiteDao.delete(specialite);
 
-		specialiteFind = specialiteDao.findById(idSpecialite);
+		Optional<Specialite> optSpecialite = specialiteDao.findById(idSpecialite);
 
-		Assert.assertNull(specialiteFind);
+		Assert.assertFalse(optSpecialite.isPresent());
 		
 		int sizeEndAfterDelete = specialiteDao.findAll().size();
 
