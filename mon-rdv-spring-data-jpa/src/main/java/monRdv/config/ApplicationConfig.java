@@ -20,7 +20,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ComponentScan("monRdv.dao.jpa") // Indiquer dans quel paquetage scanner pour trouver des annotations
 @EnableTransactionManagement // On active les annotations @Transactional
 @PropertySource("classpath:datasource.properties") // Charge le fichier datasource.properties en mémoire
 @EnableJpaRepositories(basePackages = "monRdv.dao") // Activation des JpaRepository et précision du ou des package(s) impacté(s)

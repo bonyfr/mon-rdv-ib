@@ -1,5 +1,7 @@
 package monRdv.test;
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,17 +25,17 @@ public class AdresseDaoMockTest {
 
 	@Test
 	public void adresse() {
-		Adresse adresse = new Adresse("1 rue de la Paix", "3èmdse étage", "75008", "Paris");
-		adresse.setId(5L);
+		Optional<Adresse> adresse = Optional.of(new Adresse("1 rue de la Paix", "3ème étage", "75008", "Paris"));
+		adresse.get().setId(5L);
 		
 		Mockito.when(adresseDao.findById(5L)).thenReturn(adresse);
 		
-		Adresse adresseFind = adresseDao.findById(5L);
+		Optional<Adresse> adresseFind = adresseDao.findById(5L);
 		
-		Assert.assertEquals("1 rue de la Paix", adresseFind.getRue());
-		Assert.assertEquals("3ème étage", adresseFind.getComplement());
-		Assert.assertEquals("75008", adresseFind.getCodePostal());
-		Assert.assertEquals("Paris", adresseFind.getVille());
+		Assert.assertEquals("1 rue de la Paix", adresseFind.get().getRue());
+		Assert.assertEquals("3ème étage", adresseFind.get().getComplement());
+		Assert.assertEquals("75008", adresseFind.get().getCodePostal());
+		Assert.assertEquals("Paris", adresseFind.get().getVille());
 	}
 
 

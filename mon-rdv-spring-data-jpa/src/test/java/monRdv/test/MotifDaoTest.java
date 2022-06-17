@@ -1,5 +1,7 @@
 package monRdv.test;
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,11 +39,11 @@ public class MotifDaoTest {
 
 		Long idMotif = motif.getId();
 
-		Motif motifFind = motifDao.findById(idMotif);
+		Optional<Motif> motifFind = motifDao.findById(idMotif);
 
-		Assert.assertEquals("Première Consultation", motifFind.getTitre());
-		Assert.assertEquals(30, motifFind.getDuree());
-		Assert.assertEquals("JEKYLL", motifFind.getPraticien().getNom());
+		Assert.assertEquals("Première Consultation", motifFind.get().getTitre());
+		Assert.assertEquals(30, motifFind.get().getDuree());
+		Assert.assertEquals("JEKYLL", motifFind.get().getPraticien().getNom());
 
 
 		motif.setTitre("Consultation suivi");
@@ -51,8 +53,8 @@ public class MotifDaoTest {
 
 		motifFind = motifDao.findById(idMotif);
 
-		Assert.assertEquals("Consultation suivi", motifFind.getTitre());
-		Assert.assertEquals(15, motifFind.getDuree());
+		Assert.assertEquals("Consultation suivi", motifFind.get().getTitre());
+		Assert.assertEquals(15, motifFind.get().getDuree());
 
 
 		int sizeEnd = motifDao.findAll().size();
@@ -63,7 +65,7 @@ public class MotifDaoTest {
 
 		motifFind = motifDao.findById(idMotif);
 
-		Assert.assertNull(motifFind);
+		Assert.assertEquals(motifFind.isPresent(), false);
 		
 		int sizeEndAfterDelete = motifDao.findAll().size();
 

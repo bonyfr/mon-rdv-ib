@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 
 import monRdv.config.ApplicationConfig;
 import monRdv.dao.IAdresseDao;
@@ -64,24 +65,24 @@ public class LieuDaoTest {
 		
 		Long idLieu = lieu.getId();
 		
-		Lieu lieuFind = lieuDao.findById(idLieu);
+		Optional<monRdv.model.Lieu> lieuFind = lieuDao.findById(idLieu);
 			
-		Assert.assertEquals("Hopital", lieuFind.getNom());
-		Assert.assertEquals("Urgence", lieuFind.getCommentaires());
+		Assert.assertEquals("Hopital", lieuFind.get().getNom());
+		Assert.assertEquals("Urgence", lieuFind.get().getCommentaires());
 		
-		Adresse adresseFind = adresseDao.findById(lieuFind.getAdr().getId());
+		Optional<Adresse> adresseFind = adresseDao.findById(lieuFind.get().getAdr().getId());
 		
-		Assert.assertEquals("1 rue de la Paix", adresseFind.getRue());
-		Assert.assertEquals("3ème étage", adresseFind.getComplement());
-		Assert.assertEquals("75008", adresseFind.getCodePostal());
-		Assert.assertEquals("Paris", adresseFind.getVille());
+		Assert.assertEquals("1 rue de la Paix", adresseFind.get().getRue());
+		Assert.assertEquals("3ème étage", adresseFind.get().getComplement());
+		Assert.assertEquals("75008", adresseFind.get().getCodePostal());
+		Assert.assertEquals("Paris", adresseFind.get().getVille());
 
-		Utilisateur utilisateurFind = utilisateurDao.findById(lieuFind.getPraticien().getId());
+		Optional<Utilisateur> utilisateurFind = utilisateurDao.findById(lieuFind.get().getPraticien().getId());
 		
-		Assert.assertEquals("HOUSE", utilisateurFind.getNom());
-		Assert.assertEquals("hugh", utilisateurFind.getPrenom());
-		Assert.assertEquals("dr.house@gmail.com", utilisateurFind.getEmail());
-		Assert.assertEquals("HouseMD", utilisateurFind.getMotDePasse());
+		Assert.assertEquals("HOUSE", utilisateurFind.get().getNom());
+		Assert.assertEquals("hugh", utilisateurFind.get().getPrenom());
+		Assert.assertEquals("dr.house@gmail.com", utilisateurFind.get().getEmail());
+		Assert.assertEquals("HouseMD", utilisateurFind.get().getMotDePasse());
 		
 		lieu.setNom("Cabinet");
 		lieu.setCommentaires("Ouvert");
@@ -89,8 +90,8 @@ public class LieuDaoTest {
 		lieu = lieuDao.save(lieu);
 		lieuFind = lieuDao.findById(idLieu);
 		
-		Assert.assertEquals("Cabinet", lieuFind.getNom());
-		Assert.assertEquals("Ouvert", lieuFind.getCommentaires());
+		Assert.assertEquals("Cabinet", lieuFind.get().getNom());
+		Assert.assertEquals("Ouvert", lieuFind.get().getCommentaires());
 		
 		int sizeEnd = lieuDao.findAll().size();
 		
@@ -102,7 +103,7 @@ public class LieuDaoTest {
 
 		lieuFind = lieuDao.findById(idLieu);
 
-		Assert.assertNull(lieuFind);
+		Assert.assertEquals(lieuFind.isPresent(), false);
 		
 		int sizeEndAfterDelete = lieuDao.findAll().size();
 

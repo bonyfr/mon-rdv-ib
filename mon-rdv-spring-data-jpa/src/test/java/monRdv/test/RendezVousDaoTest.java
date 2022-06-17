@@ -1,5 +1,7 @@
 package monRdv.test;
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,11 +51,11 @@ public class RendezVousDaoTest {
 		
 		Long idRendezVous = rendezVous.getId();	
 		
-		RendezVous rendezVousFind = rendezVousDao.findById(idRendezVous);
+		Optional<RendezVous> rendezVousFind = rendezVousDao.findById(idRendezVous);
 
-		Assert.assertEquals(patient.getId(), rendezVousFind.getPatient().getId());
-		Assert.assertEquals(Statut.VALIDER, rendezVousFind.getStatut());
-		Assert.assertEquals(motif.getId(), rendezVousFind.getMotif().getId());
+		Assert.assertEquals(patient.getId(), rendezVousFind.get().getPatient().getId());
+		Assert.assertEquals(Statut.VALIDER, rendezVousFind.get().getStatut());
+		Assert.assertEquals(motif.getId(), rendezVousFind.get().getMotif().getId());
 
 		int sizeEnd = rendezVousDao.findAll().size();
 
@@ -63,7 +65,7 @@ public class RendezVousDaoTest {
 
 		rendezVousFind = rendezVousDao.findById(idRendezVous);
 
-		Assert.assertNull(rendezVousFind);
+		Assert.assertEquals(rendezVousFind.isPresent(), false);
 		
 		int sizeEndAfterDelete = rendezVousDao.findAll().size();
 

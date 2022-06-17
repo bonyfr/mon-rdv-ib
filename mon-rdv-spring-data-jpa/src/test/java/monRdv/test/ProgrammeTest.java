@@ -3,6 +3,7 @@ package monRdv.test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -183,7 +184,7 @@ public class ProgrammeTest {
 
 		rendezVousDupont = rendezVousDao.save(rendezVousDupont);
 		
-		dupont = (Patient) utilisateurDao.findById(dupont.getId());
+		Optional<Patient>dupont2 = utilisateurDao.findById(dupont.getId()).map(Patient.class::cast);
 		
 		// dupont.getRendezVous().add(rendezVousDupont); // à discuter
 

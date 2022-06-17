@@ -1,5 +1,7 @@
 package monRdv.test;
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,22 +36,22 @@ public class UtilisateurDaoTest {
 
         dupont = (Patient) utilisateurDao.save(dupont);
 
-        Patient testPatient = (Patient) utilisateurDao.findById(dupont.getId());
+        Optional<Patient> testPatient =utilisateurDao.findById(dupont.getId()).map(Patient.class::cast);
 
         Assert.assertNotNull(testPatient);
 
-        Assert.assertEquals(Civilite.M, testPatient.getCivilite());
-        Assert.assertEquals("DUPONT", testPatient.getNom());
-        Assert.assertEquals("Pierre", testPatient.getPrenom());
-        Assert.assertEquals("pierre.dupont@gmail.com", testPatient.getEmail());
-        Assert.assertEquals("P@assword", testPatient.getMotDePasse());
-        Assert.assertEquals(35, testPatient.getAge());
-        Assert.assertEquals("1 85 33 14 745", testPatient.getNumeroSS());
-        Assert.assertEquals("06 06 06 06 06", testPatient.getTelephone());
+        Assert.assertEquals(Civilite.M, testPatient.get().getCivilite());
+        Assert.assertEquals("DUPONT", testPatient.get().getNom());
+        Assert.assertEquals("Pierre", testPatient.get().getPrenom());
+        Assert.assertEquals("pierre.dupont@gmail.com", testPatient.get().getEmail());
+        Assert.assertEquals("P@assword", testPatient.get().getMotDePasse());
+        Assert.assertEquals(35, testPatient.get().getAge());
+        Assert.assertEquals("1 85 33 14 745", testPatient.get().getNumeroSS());
+        Assert.assertEquals("06 06 06 06 06", testPatient.get().getTelephone());
 
         Assert.assertEquals( utilisateurDao.findAll().size() - sizeStart, 1);
 
-        utilisateurDao.delete(testPatient);
+        utilisateurDao.delete(testPatient.get());
 
         Assert.assertEquals(sizeStart, utilisateurDao.findAll().size());
     }
@@ -65,20 +67,20 @@ public class UtilisateurDaoTest {
 
         jekyll = (Praticien) utilisateurDao.save(jekyll);
 
-        Praticien hyde = (Praticien) utilisateurDao.findById(jekyll.getId());
+        Optional<Praticien> hyde = utilisateurDao.findById(jekyll.getId()).map(Praticien.class::cast);
 
         Assert.assertNotNull(hyde);
             
-        Assert.assertEquals(hyde.getNom(), "JEKYLL");
-        Assert.assertEquals(hyde.getPrenom(), "Henri");
-        Assert.assertEquals(hyde.getMotDePasse(), "Hyde");
-        Assert.assertEquals(hyde.getEmail(), "dr.jekyll@gmail.com");
-        Assert.assertEquals(hyde.getMatricule(), "8888888");
+        Assert.assertEquals(hyde.get().getNom(), "JEKYLL");
+        Assert.assertEquals(hyde.get().getPrenom(), "Henri");
+        Assert.assertEquals(hyde.get().getMotDePasse(), "Hyde");
+        Assert.assertEquals(hyde.get().getEmail(), "dr.jekyll@gmail.com");
+        Assert.assertEquals(hyde.get().getMatricule(), "8888888");
 
 
         Assert.assertEquals( utilisateurDao.findAll().size() - sizeStart, 1);
 
-        utilisateurDao.delete(hyde);
+        utilisateurDao.delete(hyde.get());
 
         Assert.assertEquals(sizeStart, utilisateurDao.findAll().size());
     }

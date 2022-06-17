@@ -1,5 +1,7 @@
 package monRdv.test;
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,16 +36,16 @@ public class SpecialiteDaoTest {
 
 		Long idSpecialite = specialite.getId();
 
-		Specialite specialiteFind = specialiteDao.findById(idSpecialite);
+		Optional<Specialite> specialiteFind = specialiteDao.findById(idSpecialite);
 
-		Assert.assertEquals("Généraliste", specialiteFind.getNom());
-		Assert.assertEquals("Médecine Générale", specialiteFind.getDescription());
+		Assert.assertEquals("Généraliste", specialiteFind.get().getNom());
+		Assert.assertEquals("Médecine Générale", specialiteFind.get().getDescription());
 		
 		specialiteFind = specialiteDao.findByIdWithPraticiens(idSpecialite);
 
-		Assert.assertEquals("Généraliste", specialiteFind.getNom());
-		Assert.assertEquals("Médecine Générale", specialiteFind.getDescription());
-		Assert.assertEquals(specialiteFind.getPraticiens().size(), 0);
+		Assert.assertEquals("Généraliste", specialiteFind.get().getNom());
+		Assert.assertEquals("Médecine Générale", specialiteFind.get().getDescription());
+		Assert.assertEquals(specialiteFind.get().getPraticiens().size(), 0);
 
 		
 		specialite.setNom("Dentiste");
@@ -53,10 +55,10 @@ public class SpecialiteDaoTest {
 
 		specialiteFind = specialiteDao.findByIdWithPraticiens(idSpecialite);
 
-		Assert.assertEquals("Dentiste", specialiteFind.getNom());
-		Assert.assertEquals("Médecine dentaire", specialiteFind.getDescription());		
+		Assert.assertEquals("Dentiste", specialiteFind.get().getNom());
+		Assert.assertEquals("Médecine dentaire", specialiteFind.get().getDescription());		
 	
-	    Assert.assertEquals(specialiteFind.getPraticiens().size(), 0);
+	    Assert.assertEquals(specialiteFind.get().getPraticiens().size(), 0);
 	  
 	    Praticien jekyll = new Praticien("JEKYLL", "Henri");
 		jekyll.setEmail("dr.jekyll@gmail.com"); jekyll.setMotDePasse("Hyde");
@@ -70,8 +72,8 @@ public class SpecialiteDaoTest {
 		specialite = specialiteDao.save(specialite); 
 		specialiteFind = specialiteDao.findByIdWithPraticiens(idSpecialite);
 	  
-		Assert.assertEquals(specialiteFind.getPraticiens().size(), 1); 
-		Praticien praticienFind = specialiteFind.getPraticiens().get(0);
+		Assert.assertEquals(specialiteFind.get().getPraticiens().size(), 1); 
+		Praticien praticienFind = specialiteFind.get().getPraticiens().get(0);
 		Assert.assertEquals(praticienFind.getNom(), "JEKYLL");
 		Assert.assertEquals(praticienFind.getPrenom(), "Henri");
 		Assert.assertEquals(praticienFind.getMotDePasse(), "Hyde");
@@ -89,12 +91,12 @@ public class SpecialiteDaoTest {
 		specialite.getPraticiens().add(house); 
 		specialite = specialiteDao.save(specialite); 
 		specialiteFind = specialiteDao.findByIdWithPraticiens(idSpecialite);
-		Assert.assertEquals(specialiteFind.getPraticiens().size(), 2);
+		Assert.assertEquals(specialiteFind.get().getPraticiens().size(), 2);
 	  
 		specialite.getPraticiens().clear(); 
 		specialite = specialiteDao.save(specialite);
 		specialiteFind = specialiteDao.findByIdWithPraticiens(idSpecialite);
-		Assert.assertEquals(specialiteFind.getPraticiens().size(), 0);
+		Assert.assertEquals(specialiteFind.get().getPraticiens().size(), 0);
 	 
 		int sizeEnd = specialiteDao.findAll().size();
 
@@ -104,7 +106,7 @@ public class SpecialiteDaoTest {
 
 		specialiteFind = specialiteDao.findById(idSpecialite);
 
-		Assert.assertNull(specialiteFind);
+		Assert.assertEquals(specialiteFind.isPresent(), false);
 		
 		int sizeEndAfterDelete = specialiteDao.findAll().size();
 

@@ -1,6 +1,7 @@
 package monRdv.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +11,7 @@ import monRdv.model.Adresse;
 
 public interface IAdresseDao extends JpaRepository<Adresse, Long>{
 	List<Adresse> findByVille(String ville); // par convention de nommage
-	
+	Optional<Adresse> findById(Long id);
 	@Query("select l.adr from Lieu l where l.praticien.id = :id")
 	List<Adresse> findAllByPraticien(@Param("id") Long idPraticien); // par annotation (à privilégier)
 	
