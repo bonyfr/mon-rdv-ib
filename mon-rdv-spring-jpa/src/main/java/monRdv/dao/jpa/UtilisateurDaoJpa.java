@@ -3,293 +3,92 @@ package monRdv.dao.jpa;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import monRdv.Singleton;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import monRdv.dao.IUtilisateurDao;
-import monRdv.exception.MonRdvPersistenceException;
 import monRdv.model.Administrateur;
 import monRdv.model.Patient;
 import monRdv.model.Praticien;
 import monRdv.model.Utilisateur;
 
+@Repository
+@Transactional(readOnly = true)
 public class UtilisateurDaoJpa implements IUtilisateurDao {
+
+	@PersistenceContext
+	private EntityManager em;
 
 	@Override
 	public List<Utilisateur> findAll() {
-		List<Utilisateur> utilisateurs = null;
+		TypedQuery<Utilisateur> query = em.createQuery("from Utilisateur", Utilisateur.class);
 
-		EntityManager em = null;
-		EntityTransaction tx = null;
-
-		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
-
-			TypedQuery<Utilisateur> query = em.createQuery("from Utilisateur", Utilisateur.class);
-
-			utilisateurs = query.getResultList();
-
-			tx.commit();
-		} catch (Exception e) {
-			if (tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			throw new MonRdvPersistenceException(e);
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-
-		return utilisateurs;
+		return query.getResultList();
 	}
 
 	@Override
 	public Utilisateur findById(Long id) {
-		Utilisateur utilisateur = null;
-
-		EntityManager em = null;
-		EntityTransaction tx = null;
-
-		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
-
 //			TypedQuery<Utilisateur> query = em.createQuery("from Utilisateur a where a.id = :id", Utilisateur.class);
 //			query.setParameter("id", id);
 //			
-//			utilisateur = query.getSingleResult();
+//			return query.getSingleResult();
 
-			utilisateur = em.find(Utilisateur.class, id);
-
-			tx.commit();
-		} catch (Exception e) {
-			if (tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			throw new MonRdvPersistenceException(e);
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-
-		return utilisateur;
+		return em.find(Utilisateur.class, id);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Utilisateur save(Utilisateur obj) {
-		EntityManager em = null;
-		EntityTransaction tx = null;
-
-		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
-
-			obj = em.merge(obj);
-
-			tx.commit();
-		} catch (Exception e) {
-			if (tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			throw new MonRdvPersistenceException(e);
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-
-		return obj;
+		return em.merge(obj);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void delete(Utilisateur obj) {
-		EntityManager em = null;
-		EntityTransaction tx = null;
-
-		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
-
-			em.remove(em.merge(obj));
-
-			tx.commit();
-		} catch (Exception e) {
-			if (tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			throw new MonRdvPersistenceException(e);
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
+		em.remove(em.merge(obj));
 	}
 
 	@Override
 	public List<Administrateur> findAllAdministrateur() {
-		List<Administrateur> administrateurs = null;
+		TypedQuery<Administrateur> query = em.createQuery("from Administrateur", Administrateur.class);
 
-		EntityManager em = null;
-		EntityTransaction tx = null;
-
-		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
-
-			TypedQuery<Administrateur> query = em.createQuery("from Administrateur", Administrateur.class);
-
-			administrateurs = query.getResultList();
-
-			tx.commit();
-		} catch (Exception e) {
-			if (tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			throw new MonRdvPersistenceException(e);
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-
-		return administrateurs;
+		return query.getResultList();
 	}
 
 	@Override
 	public List<Patient> findAllPatient() {
-		List<Patient> patients = null;
+		TypedQuery<Patient> query = em.createQuery("from Patient", Patient.class);
 
-		EntityManager em = null;
-		EntityTransaction tx = null;
-
-		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
-
-			TypedQuery<Patient> query = em.createQuery("from Patient", Patient.class);
-
-			patients = query.getResultList();
-
-			tx.commit();
-		} catch (Exception e) {
-			if (tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			throw new MonRdvPersistenceException(e);
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-
-		return patients;
+		return query.getResultList();
 	}
 
 	@Override
 	public List<Praticien> findAllPraticien() {
-		List<Praticien> praticiens = null;
+		TypedQuery<Praticien> query = em.createQuery("from Praticien", Praticien.class);
 
-		EntityManager em = null;
-		EntityTransaction tx = null;
-
-		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
-
-			TypedQuery<Praticien> query = em.createQuery("from Praticien", Praticien.class);
-
-			praticiens = query.getResultList();
-
-			tx.commit();
-		} catch (Exception e) {
-			if (tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			throw new MonRdvPersistenceException(e);
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-
-		return praticiens;
+		return query.getResultList();
 	}
 
 	@Override
 	public Utilisateur findByEmail(String email) {
-		Utilisateur utilisateur = null;
-		
-		EntityManager em = null;
-		EntityTransaction tx = null;
+		TypedQuery<Utilisateur> query = em.createQuery("from Utilisateur u where u.email = :email", Utilisateur.class);
 
-		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
+		query.setParameter("email", email);
 
-			TypedQuery<Utilisateur> query = em.createQuery("from Utilisateur u where u.email = :email", Utilisateur.class);
-
-			query.setParameter("email", email);
-			
-			utilisateur = query.getSingleResult();
-
-			tx.commit();
-		} catch (Exception e) {
-			if (tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			throw new MonRdvPersistenceException(e);
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-		
-		return utilisateur;
+		return query.getSingleResult();
 	}
 
 	@Override
 	public List<Patient> findAllPatientByVille(String ville) {
-		List<Patient> patients = null;
-				
-		EntityManager em = null;
-		EntityTransaction tx = null;
+		TypedQuery<Patient> query = em.createQuery("from Patient p join p.adresse a where a.ville = :ville",
+				Patient.class);
 
-		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
-			tx = em.getTransaction();
-			tx.begin();
+		query.setParameter("ville", ville);
 
-			TypedQuery<Patient> query = em.createQuery("from Patient p join p.adresse a where a.ville = :ville", Patient.class);
-
-			query.setParameter("ville", ville);
-			
-			patients = query.getResultList();
-
-			tx.commit();
-		} catch (Exception e) {
-			if (tx != null && tx.isActive()) {
-				tx.rollback();
-			}
-			throw new MonRdvPersistenceException(e);
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-		
-		return patients;
+		return query.getResultList();
 	}
 
 }
