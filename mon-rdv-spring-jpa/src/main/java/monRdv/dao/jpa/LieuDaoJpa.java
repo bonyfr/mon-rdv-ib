@@ -3,26 +3,22 @@ package monRdv.dao.jpa;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
-import monRdv.Singleton;
-import monRdv.dao.IAdresseDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import monRdv.dao.ILieuDao;
 import monRdv.exception.MonRdvPersistenceException;
 import monRdv.model.Lieu;
 
+@Repository
 public class LieuDaoJpa implements ILieuDao {
-
-	private IAdresseDao adresseDao;
-
-	public IAdresseDao getAdresseDao() {
-		return adresseDao;
-	}
-
-	public void setAdresseDao(IAdresseDao adresseDao) {
-		this.adresseDao = adresseDao;
-	}
+	
+	@Autowired
+	private EntityManagerFactory emf;
 
 	@Override
 	public List<Lieu> findAll() {
@@ -32,7 +28,7 @@ public class LieuDaoJpa implements ILieuDao {
 		EntityTransaction tx = null;
 
 		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -63,7 +59,7 @@ public class LieuDaoJpa implements ILieuDao {
 		EntityTransaction tx = null;
 
 		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -95,7 +91,7 @@ public class LieuDaoJpa implements ILieuDao {
 		EntityTransaction tx = null;
 
 		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
@@ -122,7 +118,7 @@ public class LieuDaoJpa implements ILieuDao {
 		EntityTransaction tx = null;
 
 		try {
-			em = Singleton.getInstance().getEmf().createEntityManager();
+			em = emf.createEntityManager();
 			tx = em.getTransaction();
 			tx.begin();
 
